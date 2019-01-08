@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+    <style>
+        .logo {
+            left: 40px;
+        }
+        .logo img {
+            width: 70px;height: 50px;
+        }
+        h1 {
+            height: 60px; line-height: 60px;margin-left: 50px;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header header header-demo">
+        <a class="logo">
+            <img src="http://www.wanandroid.com/resources/image/pc/logo.png" />
+        </a>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                <!-- 侧边导航: <ul class="layui-nav layui-nav-tree layui-nav-side"> -->
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;">主页1</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" data-url="main_github" class="layui-this">github项目</a></dd>
+                        <dd><a href="javascript:;" data-url="main_blog">收藏博客</a></dd>
+                        <dd><a href="javascript:;" data-url="main_classify">分类</a></dd>
+                        <!--<dd><a href="javascript:;">公众号</a></dd>-->
+                        <!--<dd><a href="javascript:;">工具</a></dd>-->
+                    </dl>
+                </li>
+                <li class="layui-nav-item ">
+                    <a href="javascript:;">解决方案</a>
+                    <!--<dl class="layui-nav-child">-->
+                        <!--<dd><a href="javascript:;">移动模块</a></dd>-->
+                        <!--<dd><a href="javascript:;">后台模版</a></dd>-->
+                        <!--<dd><a href="javascript:;">电商平台</a></dd>-->
+                    <!--</dl>-->
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">产品</a>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">大数据</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body">
+        <iframe id="fm_main" scrolling="auto" frameborder="0" src="main_github" style="width:100%;height:98%;"></iframe>
+    </div>
+    <div class="layui-footer footer footer-demo">
+        <div class="layui-main">
+            foot
+        </div>
+    </div>
+</div>
+</body>
+
+<script th:src="@{/layui/layui.js}"></script>
+<script>
+    layui.use(['element', 'jquery'], function () {
+        var element = layui.element
+            , $ = layui.$;
+
+        element.on('nav(test)', function(elem){
+            var url = elem.attr('data-url');
+            if(url != null && url != ""){
+                $("#fm_main").attr("src", url);
+            }
+        });
+    })
+</script>
+</html>

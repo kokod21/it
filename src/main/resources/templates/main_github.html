@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+    <style>
+        h1 {
+            height: 60px; line-height: 60px;margin-left: 20px;
+        }
+        .layui-btn-group {
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Github项目管理</h1>
+    </div>
+    <hr >
+    <div class="layui-row">
+        <div class="layui-col-md9">
+            <div class="layui-btn-group" >
+                <button id="add" class="layui-btn"><i class="layui-icon">&#xe654;</i>增加</button>
+            </div>
+        </div>
+        <!--<div class="layui-col-md2">-->
+            <!--<input id="search_key" type="text" autocomplete="off" class="layui-input" >-->
+        <!--</div>-->
+        <!--<div class="layui-col-md1">-->
+            <!--<div class="layui-btn-group" >-->
+                <!--<button id="search" class="layui-btn"><i class="layui-icon">&#xe654;</i>查询</button>-->
+            <!--</div>-->
+        <!--</div>-->
+    </div>
+    <table id="tb_data" lay-filter="github"></table>
+</body>
+
+<script th:src="@{/layui/layui.js}"></script>
+<script>
+
+    function gotoClassify() {
+        location.href="main_classify";
+    }
+
+    layui.use(['table', 'jquery', 'layer'], function () {
+        var table = layui.table
+            , $ = layui.$
+            ,layer = layui.layer;
+
+        $('#add').on('click', function () {
+            location.href="add_github";
+        });
+
+        $("#search").on('click',function () {
+            var keyword = $("#search_key").val();
+            alert(keyword);
+//            //表格重载
+//            table.reload('tb_data',{
+//                url: 'getBlogList'
+//                , where:{
+//                    keyword:keyword
+//                }
+//            })
+        });
+
+        //第一个实例
+        table.render({
+            elem: '#tb_data'
+            ,height: 'full-150'
+            ,url: 'getGithubList' //数据接口
+            ,page: true //开启分页
+            ,even: true // 设置间隔
+            ,toolbar: true
+            ,cols: [
+                [ //表头
+                    {field: 'id', title: 'ID', width:50, sort: true, fixed: 'left'}
+                    ,{field: 'title', title: '名称', width:200}
+                    ,{field: 'author', title: '作者', width:160}
+                    ,{field: 'create_time', title: '时间', width:160}
+                    ,{field: 'url', title: '网址url', width: 400}
+                    ,{field: 'remark', title: '备注'}
+                    ,{fixed: 'right', title: '操作', width:150, align:'center', toolbar: '#barDemo', fixed: 'right'} //这里的toolbar值是模板元素的选择器
+                ]
+            ]
+        });
+
+        //监听工具条
+        table.on('tool(github)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+            var data = obj.data; //获得当前行数据
+            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+            var tr = obj.tr; //获得当前行 tr 的DOM对象
+            if(layEvent === 'detail'){ //查看
+                console.log(data);
+                //do somehing
+            } else if(layEvent === 'del'){ //删除
+                layer.confirm('真的删除行么', function(index){
+                    layer.close(index);
+                    //向服务端发送删除指令
+                    console.log(data);
+                    var url = "deleteGithub";
+                    var params = {g_id: data.id};
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: url,
+                        data: params,
+                        success: function (result) {
+                            alert('删除数据成功--------------');
+                            obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+                            layer.close(index);
+                        },
+                        error: function (result) {
+                            alert('删除失败，请重试--------------')
+                        }
+                    });
+                });
+            } else if(layEvent === 'edit'){ //编辑
+                //do something
+                console.log(data.id);
+                location.href="add_github?id="+data.id;
+
+////                同步更新缓存对应的值
+//                obj.update({
+//                    author: '123'
+//                    ,title: 'xxx'
+//                });
+            }
+        });
+
+
+    })
+</script>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+</html>
