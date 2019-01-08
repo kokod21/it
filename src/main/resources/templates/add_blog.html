@@ -99,12 +99,12 @@
                     );
                 },
                 success: function (result) {
-                    layer.msg('保存数据成功--------------');
+                    alert('保存数据成功--------------');
                     console.log(result)
                     location.replace("main_blog")
                 },
                 error: function (result) {
-                    layer.msg('保存失败，请重试--------------')
+                    alert('保存失败，请重试--------------')
                     console.log(result)
                 }
             });
