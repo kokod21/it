@@ -76,7 +76,7 @@
     layui.use(['form', 'layer', 'jquery'], function () {
         var form = layui.form
             ,layer = layui.layer
-            ,$ = layui.$;
+            ,$$ = layui.$;
         form.on('submit(github)', function (data) {
             var url = "saveGithub";
             var data = {
@@ -87,11 +87,17 @@
                 ,author: data.field.author
                 ,remark: data.field.remark
             }
-            $.ajax({
+            $$.ajax({
                 type: "POST",
                 dataType: "json",
                 url: url,
                 data: data,
+                beforeSend: function(){
+                    layer.load(
+                        1,
+                        {time: 5000}
+                    );
+                },
                 success: function (result) {
                     alert('保存数据成功--------------');
                     console.log(result)
@@ -102,6 +108,7 @@
                     console.log(result)
                 }
             });
+            return false;
         })
     });
 </script>

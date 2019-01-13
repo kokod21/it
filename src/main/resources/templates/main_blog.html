@@ -20,9 +20,10 @@
     </div>
     <hr >
     <div class="layui-row">
-        <div class="layui-col-md9">
+        <div class="layui-col-md10">
             <div class="layui-btn-group" >
                 <button id="add" class="layui-btn"><i class="layui-icon">&#xe654;</i>增加</button>
+                <button id="print" class="layui-btn"><i class="layui-icon layui-icon-export"></i>打印</button>
             </div>
         </div>
         <!--<div class="layui-col-md2">-->
@@ -40,12 +41,17 @@
 <script th:src="@{/layui/layui.js}"></script>
 <script>
 
+    var currentData;
     layui.use(['jquery','table'], function () {
         var table = layui.table
             , $ = layui.$;
 
         $('#add').on('click', function () {
             location.href="add_blog";
+        });
+        $('#print').on('click', function () {
+            console.log(currentData);
+            table.exportFile(tb1.config.id, currentData,'xls' )
         });
 
         $("#search").on('click',function () {
@@ -69,6 +75,9 @@
             ,even: true // 设置间隔
             ,id: 'table_blog'
             ,toolbar: true
+            ,done: function (res, curr, count) {
+                currentData = res.data;
+            }
             ,cols: [
                 [ //表头
                     {field: 'id', title: 'ID', width:50, sort: true, fixed: 'left'}
@@ -114,7 +123,6 @@
                 });
             } else if(layEvent === 'edit'){ //编辑
                 //do something
-                console.log(data);
                 location.href="add_blog?id="+data.id;
             }
         });

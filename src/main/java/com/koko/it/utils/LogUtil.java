@@ -11,7 +11,7 @@ public class LogUtil {
     }
 
     public static void info(Object o){
-        logger.info(LogUtil.class.getSimpleName(), o);
+        info(LogUtil.class.getSimpleName(), o);
     }
 
     public static void info(String s, Object o){
