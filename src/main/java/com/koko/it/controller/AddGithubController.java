@@ -40,11 +40,11 @@ public class AddGithubController {
 
     @RequestMapping(value = "/saveGithub", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseMessage saveGithub(long id, long classify_id, String url, String title, String author, String remark){
+    public ResponseMessage saveGithub(Long id, Long classify_id, String url, String title, String author, String remark){
         System.out.println("saveGithub----------------------");
         try {
             GithubProject githubProject = new GithubProject();
-            if(id != 0){
+            if(id != null){
                 githubProject.setId(id);
             }
             githubProject.setClassify_id(classify_id);

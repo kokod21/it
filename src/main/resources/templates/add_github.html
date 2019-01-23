@@ -15,7 +15,7 @@
 </head>
 <body>
     <div>
-        <h1>新增Github项目</h1>
+        <h1>新增Github项目1</h1>
     </div>
 
     <div>
@@ -79,9 +79,8 @@
             ,$$ = layui.$;
         form.on('submit(github)', function (data) {
             var url = "saveGithub";
-            var data = {
-                id: data.field.gp_id
-                ,classify_id: data.field.classify
+            var data1 = {
+                classify_id: data.field.classify
                 ,url: data.field.url
                 ,title: data.field.title
                 ,author: data.field.author
@@ -91,7 +90,7 @@
                 type: "POST",
                 dataType: "json",
                 url: url,
-                data: data,
+                data: data1,
                 beforeSend: function(){
                     layer.load(
                         1,
@@ -100,10 +99,12 @@
                 },
                 success: function (result) {
                     alert('保存数据成功--------------');
+                    layer.closeAll();
                     console.log(result)
                     location.replace("main_github")
                 },
                 error: function (result) {
+                    layer.closeAll();
                     alert('保存失败，请重试--------------')
                     console.log(result)
                 }

@@ -5,8 +5,8 @@ import com.koko.it.entity.GithubProject;
 import com.koko.it.service.GithubProjectService;
 import com.koko.it.utils.LogUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,7 +29,8 @@ public class MainGithubController {
     @ResponseBody
     public ResponseMessage getGithubList(int page, int limit, String keyword, String date) {
         long count = githubProjectService.count();
-        List<GithubProject> blogList = githubProjectService.findAll(PageRequest.of(page-1, limit)).getContent();
+        List<GithubProject> blogList = githubProjectService.findAll(
+                PageRequest.of(page-1, limit, Sort.by(Sort.Order.desc("id")))).getContent();
         return ResponseMessage.ok(count,blogList);
     }
 

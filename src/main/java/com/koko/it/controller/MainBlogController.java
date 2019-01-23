@@ -7,6 +7,7 @@ import com.koko.it.utils.LogUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -28,7 +29,8 @@ public class MainBlogController {
     @ResponseBody
     public ResponseMessage getBlogList(int page, int limit, String keyword, String date) {
         long count = blogService.count();
-        List<Blog> blogList = blogService.findAll(PageRequest.of(page-1, limit)).getContent();
+        List<Blog> blogList = blogService.findAll(
+                PageRequest.of(page-1, limit, Sort.by(Sort.Order.desc("id")))).getContent();
         return ResponseMessage.ok(count, blogList);
     }
 

@@ -4,13 +4,48 @@ package com.koko.it;
 
 import java.io.File;
 import java.math.BigInteger;
+import java.security.MessageDigest;
 
 public class HelloWorld {
 
     static String code = "aa0f0e020112a8825800000002000000640bcc";
     public static void main(String[] args){
 
-        renameFile();
+//        renameFile();
+        long time = System.currentTimeMillis()/1000;
+        String phone = "13560335577";
+//        String phone = "13415832022";
+        String signTemp = "appid=CgdbJKc0g2DRphWY&mobile="+phone+"&timestamp="+time;
+        String signTemp2 = MD5(signTemp+"&key=ghxhBdMy4WCXjZpbtqZnBmGGCIKoQYfa").toUpperCase();
+        String url = "https://mjz.xiaoxianai.cn/auth?"+signTemp+"&sign="+signTemp2;
+//        String url = "https://mls.xiaoxianai.cn/papers?"+signTemp+"&sign="+signTemp2;
+        System.out.println(url);
+    }
+
+    public static String MD5(String s) {
+        char hexDigits[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+        try {
+            byte[] btInput = s.getBytes();
+            // 获得MD5摘要算法的 MessageDigest 对象
+            MessageDigest mdInst = MessageDigest.getInstance("MD5");
+            // 使用指定的字节更新摘要
+            mdInst.update(btInput);
+            // 获得密文
+            byte[] md = mdInst.digest();
+            // 把密文转换成十六进制的字符串形式
+            int j = md.length;
+            char str[] = new char[j * 2];
+            int k = 0;
+            for (int i = 0; i < j; i++) {
+                byte byte0 = md[i];
+                str[k++] = hexDigits[byte0 >>> 4 & 0xf];
+                str[k++] = hexDigits[byte0 & 0xf];
+            }
+            return new String(str);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private static void renameFile(){
