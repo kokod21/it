@@ -40,18 +40,25 @@ public class AddBlogController {
 
     @RequestMapping(value = "/saveBlog", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseMessage saveBlog(Long b_id, Long classify_id, String url, String title, String author, String remark){
+    public ResponseMessage saveBlog(Long id, Long classify_id, String url, String title, String author, String remark){
         try {
-            Blog blog = new Blog();
-            if(b_id != null){
-                blog.setId(b_id);
+            Blog blog;
+            if(id == null){
+                blog = new Blog();
+                blog.setClassify_id(classify_id);
+                blog.setUrl(url);
+                blog.setTitle(title);
+                blog.setAuthor(author);
+                blog.setRemark(remark);
+                blog.setCreate_time(TimeUtils.todayToString(TimeUtils.TODAY_TIME));
+            } else {
+                blog = blogService.findById(id).get();
+                blog.setClassify_id(classify_id);
+                blog.setUrl(url);
+                blog.setTitle(title);
+                blog.setAuthor(author);
+                blog.setRemark(remark);
             }
-            blog.setClassify_id(classify_id);
-            blog.setUrl(url);
-            blog.setTitle(title);
-            blog.setAuthor(author);
-            blog.setRemark(remark);
-            blog.setCreate_time(TimeUtils.todayToString(TimeUtils.TODAY_TIME));
             Blog newBlog = blogService.save(blog);
             if (newBlog != null) {
                 return ResponseMessage.ok(newBlog);

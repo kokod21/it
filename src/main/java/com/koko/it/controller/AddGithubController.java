@@ -43,16 +43,23 @@ public class AddGithubController {
     public ResponseMessage saveGithub(Long id, Long classify_id, String url, String title, String author, String remark){
         System.out.println("saveGithub----------------------");
         try {
-            GithubProject githubProject = new GithubProject();
-            if(id != null){
-                githubProject.setId(id);
+            GithubProject githubProject;
+            if(id == null){
+                githubProject = new GithubProject();
+                githubProject.setClassify_id(classify_id);
+                githubProject.setUrl(url);
+                githubProject.setTitle(title);
+                githubProject.setAuthor(author);
+                githubProject.setRemark(remark);
+                githubProject.setCreate_time(TimeUtils.todayToString(TimeUtils.TODAY_TIME));
+            } else {
+                githubProject = githubService.findById(id).get();
+                githubProject.setClassify_id(classify_id);
+                githubProject.setUrl(url);
+                githubProject.setTitle(title);
+                githubProject.setAuthor(author);
+                githubProject.setRemark(remark);
             }
-            githubProject.setClassify_id(classify_id);
-            githubProject.setUrl(url);
-            githubProject.setTitle(title);
-            githubProject.setAuthor(author);
-            githubProject.setRemark(remark);
-            githubProject.setCreate_time(TimeUtils.todayToString(TimeUtils.TODAY_TIME));
             GithubProject gp = githubService.save(githubProject);
             if (gp != null) {
                 return ResponseMessage.ok(gp);

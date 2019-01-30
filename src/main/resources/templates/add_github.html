@@ -20,7 +20,7 @@
 
     <div>
         <form class="layui-form" action="">
-            <input name="gp_id" type="hidden" th:value="${gp} != null?${gp.id}:''">
+            <input name="id" type="hidden" th:value="${gp} != null?${gp.id}:''">
             <div class="layui-form-item">
                 <label class="layui-form-label">名称</label>
                 <div class="layui-input-block">
@@ -80,7 +80,8 @@
         form.on('submit(github)', function (data) {
             var url = "saveGithub";
             var data1 = {
-                classify_id: data.field.classify
+                id : data.field.id
+                ,classify_id: data.field.classify
                 ,url: data.field.url
                 ,title: data.field.title
                 ,author: data.field.author
