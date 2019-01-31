@@ -15,7 +15,7 @@
 </head>
 <body>
     <div>
-        <h1>新增Github项目1</h1>
+        <h1>新增项目</h1>
     </div>
 
     <div>
@@ -54,7 +54,7 @@
                 <div class="layui-input-block">
                     <select name="classify" lay-verify="required">
                         <option value=""></option>
-                        <option th:selected="${gp} != null?${gp.classify_id == item.id}:false" th:each="item:${classifies}" th:value="${item.id}" th:text="${item.classify_name}"></option>
+                        <option th:selected="${gp} != null?${gp.classifyId == item.id}:false" th:each="item:${classifies}" th:value="${item.id}" th:text="${item.classifyName}"></option>
                     </select>
                 </div>
             </div>
@@ -102,7 +102,7 @@
                     alert('保存数据成功--------------');
                     layer.closeAll();
                     console.log(result)
-                    location.replace("main_github")
+                    location.replace("main_project")
                 },
                 error: function (result) {
                     layer.closeAll();

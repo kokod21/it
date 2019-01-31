@@ -3,9 +3,9 @@ package com.koko.it.controller;
 import com.alibaba.druid.util.StringUtils;
 import com.koko.it.common.response.ResponseMessage;
 import com.koko.it.entity.Classify;
-import com.koko.it.entity.GithubProject;
+import com.koko.it.entity.Project;
 import com.koko.it.service.ClassifyService;
-import com.koko.it.service.GithubProjectService;
+import com.koko.it.service.ProjectService;
 import com.koko.it.utils.LogUtil;
 import com.koko.it.utils.TimeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,24 +18,24 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
-public class AddGithubController {
+public class AddProjectController {
 
     @Autowired
     ClassifyService classifyService;
     @Autowired
-    GithubProjectService githubService;
+    ProjectService projectService;
 
-    @RequestMapping("/add_github")
-    public String add_github(HttpServletRequest request, String id){
+    @RequestMapping("/add_project")
+    public String add_project(HttpServletRequest request, String id){
         if(!StringUtils.isEmpty(id)){
-            GithubProject gp = githubService.findById(Long.parseLong(id)).get();
+            Project gp = projectService.findById(Long.parseLong(id)).get();
             if(gp != null){
                 request.setAttribute("gp", gp);
             }
         }
         List<Classify> classifies = classifyService.findAll();
         request.setAttribute("classifies", classifies);
-        return "add_github";
+        return "add_project";
     }
 
     @RequestMapping(value = "/saveGithub", method = RequestMethod.POST)
@@ -43,24 +43,24 @@ public class AddGithubController {
     public ResponseMessage saveGithub(Long id, Long classify_id, String url, String title, String author, String remark){
         System.out.println("saveGithub----------------------");
         try {
-            GithubProject githubProject;
+            Project project;
             if(id == null){
-                githubProject = new GithubProject();
-                githubProject.setClassify_id(classify_id);
-                githubProject.setUrl(url);
-                githubProject.setTitle(title);
-                githubProject.setAuthor(author);
-                githubProject.setRemark(remark);
-                githubProject.setCreate_time(TimeUtils.todayToString(TimeUtils.TODAY_TIME));
+                project = new Project();
+                project.setClassifyId(classify_id);
+                project.setUrl(url);
+                project.setTitle(title);
+                project.setAuthor(author);
+                project.setRemark(remark);
+                project.setCreateTime(TimeUtils.todayToString(TimeUtils.TODAY_TIME));
             } else {
-                githubProject = githubService.findById(id).get();
-                githubProject.setClassify_id(classify_id);
-                githubProject.setUrl(url);
-                githubProject.setTitle(title);
-                githubProject.setAuthor(author);
-                githubProject.setRemark(remark);
+                project = projectService.findById(id).get();
+                project.setClassifyId(classify_id);
+                project.setUrl(url);
+                project.setTitle(title);
+                project.setAuthor(author);
+                project.setRemark(remark);
             }
-            GithubProject gp = githubService.save(githubProject);
+            Project gp = projectService.save(project);
             if (gp != null) {
                 return ResponseMessage.ok(gp);
             }

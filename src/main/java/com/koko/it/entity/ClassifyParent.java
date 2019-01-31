@@ -10,7 +10,7 @@ public class ClassifyParent implements java.io.Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String parent_name;
+    private String parentName;
 
     @OneToMany
     private Set<Classify> classifies;
@@ -23,12 +23,12 @@ public class ClassifyParent implements java.io.Serializable {
         this.id = id;
     }
 
-    public String getParent_name() {
-        return parent_name;
+    public String getParentName() {
+        return parentName;
     }
 
-    public void setParent_name(String parent_name) {
-        this.parent_name = parent_name;
+    public void setParentName(String parentName) {
+        this.parentName = parentName;
     }
 
     public Set<Classify> getClassifies() {

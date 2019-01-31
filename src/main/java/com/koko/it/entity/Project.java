@@ -6,16 +6,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class GithubProject implements java.io.Serializable{
+public class Project implements java.io.Serializable{
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
-    private Long classify_id;
+    private Long classifyId;
     private String url;
     private String title;
     private String author;
-    private String create_time;
+    private String createTime;
     private String remark;
 
     public Long getId() {
@@ -26,12 +26,12 @@ public class GithubProject implements java.io.Serializable{
         this.id = id;
     }
 
-    public Long getClassify_id() {
-        return classify_id;
+    public Long getClassifyId() {
+        return classifyId;
     }
 
-    public void setClassify_id(Long classify_id) {
-        this.classify_id = classify_id;
+    public void setClassifyId(Long classify_id) {
+        this.classifyId = classify_id;
     }
 
     public String getUrl() {
@@ -58,12 +58,12 @@ public class GithubProject implements java.io.Serializable{
         this.author = author;
     }
 
-    public String getCreate_time() {
-        return create_time;
+    public String getCreateTime() {
+        return createTime;
     }
 
-    public void setCreate_time(String create_time) {
-        this.create_time = create_time;
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
     }
 
     public String getRemark() {

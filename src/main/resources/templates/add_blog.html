@@ -54,7 +54,7 @@
                 <div class="layui-input-block">
                     <select name="classify" lay-verify="required">
                         <option value=""></option>
-                        <option th:selected="${gp} != null?${gp.classify_id == item.id}:false" th:each="item:${classifies}" th:value="${item.id}" th:text="${item.classify_name}"></option>
+                        <option th:selected="${gp} != null?${gp.classify_id == item.id}:false" th:each="item:${classifies}" th:value="${item.id}" th:text="${item.classifyName}"></option>
                     </select>
                 </div>
             </div>

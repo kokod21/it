@@ -10,7 +10,7 @@ public class Classify implements java.io.Serializable{
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 //    private Long parent_id;
-    private String classify_name;
+    private String classifyName;
 
     @ManyToOne
     @JoinColumn(name = "parent_id")
@@ -32,12 +32,12 @@ public class Classify implements java.io.Serializable{
 //        this.parent_id = parent_id;
 //    }
 
-    public String getClassify_name() {
-        return classify_name;
+    public String getClassifyName() {
+        return classifyName;
     }
 
-    public void setClassify_name(String classify_name) {
-        this.classify_name = classify_name;
+    public void setClassifyName(String classifyName) {
+        this.classifyName = classifyName;
     }
 
     public ClassifyParent getClassifyParent() {
