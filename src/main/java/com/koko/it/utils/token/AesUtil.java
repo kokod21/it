@@ -1,4 +1,4 @@
-package com.koko.it.utils;
+package com.koko.it.utils.token;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -7,8 +7,8 @@ import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
 import java.security.SecureRandom;
 
-import static com.koko.it.utils.Base64Util.decryptBASE64;
-import static com.koko.it.utils.Base64Util.encryptBASE64;
+import static com.koko.it.utils.token.Base64Util.decryptBASE64;
+import static com.koko.it.utils.token.Base64Util.encryptBASE64;
 
 /**
  * Description: AES加密工具

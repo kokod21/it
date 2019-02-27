@@ -1,4 +1,7 @@
-package com.koko.it.utils;
+package com.koko.it.utils.token;
+
+import com.koko.it.utils.token.Base64Util;
+import com.koko.it.utils.token.SaltUtil;
 
 /**
  * Description: 用户密码工具

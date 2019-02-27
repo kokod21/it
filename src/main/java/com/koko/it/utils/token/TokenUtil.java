@@ -1,4 +1,4 @@
-package com.koko.it.utils;
+package com.koko.it.utils.token;
 
 import com.google.gson.Gson;
 import com.koko.it.entity.TokenHeader;

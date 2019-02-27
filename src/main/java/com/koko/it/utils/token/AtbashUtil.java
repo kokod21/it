@@ -1,4 +1,6 @@
-package com.koko.it.utils;
+package com.koko.it.utils.token;
+
+import com.koko.it.utils.TextUtils;
 
 /**
  * Description:  埃特巴什码：最后一个字母代表第一个字母，倒数第二个字母代表第二个字母

@@ -16,7 +16,7 @@
 </head>
 <body>
     <div>
-        <h1>收藏项目管理</h1>
+        <h1>收藏项目</h1>
     </div>
     <hr >
     <div class="layui-row">
@@ -44,16 +44,13 @@
 <script th:src="@{/layui/layui.js}"></script>
 <script>
 
-    function gotoClassify() {
-        location.href="main_classify";
-    }
-
     layui.use(['table', 'jquery', 'layer', 'form'], function () {
         var table = layui.table
             , $ = layui.$
             ,layer = layui.layer
             ,form = layui.form;
 
+        layer.load(2);
         $('#add').on('click', function () {
             location.href="add_project";
         });
@@ -72,7 +69,7 @@
 
         form.on('select(test)', function(data){
             console.log(data.value);
-
+            layer.load(2);
             table.reload('table_test', {
                 where : {
                     classify_id : data.value
@@ -91,6 +88,9 @@
             ,page: true //开启分页
             ,even: true // 设置间隔
             ,toolbar: true
+            ,done : function () {
+                layer.closeAll();
+            }
             ,cols: [
                 [ //表头
                     {field: 'id', title: 'ID', width:50, sort: true, fixed: 'left'}

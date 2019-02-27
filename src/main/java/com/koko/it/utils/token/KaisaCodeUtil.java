@@ -1,4 +1,6 @@
-package com.koko.it.utils;
+package com.koko.it.utils.token;
+
+import com.koko.it.utils.TextUtils;
 
 /**
  * Description:恺撒移位工具

@@ -10,6 +10,6 @@ public class MyWebMvcConfiguration implements WebMvcConfigurer{
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new MyInterceptor())
-                .addPathPatterns("/index", "/main_page");
+                .addPathPatterns("/index", "/add_blog", "/add_project", "/main_project", "/main_classify");
     }
 }
