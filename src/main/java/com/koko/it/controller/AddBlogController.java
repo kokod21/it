@@ -20,6 +20,8 @@ import java.util.List;
 @Controller
 public class AddBlogController {
 
+    private LogUtil logUtil = new LogUtil(AddBlogController.class);
+
     @Autowired
     ClassifyService classifyService;
     @Autowired
@@ -65,7 +67,7 @@ public class AddBlogController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            LogUtil.saveErrorMsg("saveBlog", e);
+            logUtil.saveErrorMsg("saveBlog", e);
         }
         return ResponseMessage.fail("保存数据错误");
     }

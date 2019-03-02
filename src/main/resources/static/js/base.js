@@ -86,19 +86,6 @@ function getUrlVars() {
 	return vars;
 }
 
-var isLoading = false;
-function startScroll(callback){
-    $(window).scroll(function(){
-        if ($(window).scrollTop() + $(window).height() == $(document).height()) {
-            if(!isLoading){
-                isLoading = true;
-                //记得在callback()中将isLoading设置为false，才能继续滑动
-                callback();
-            }
-        }
-    });
-}
-
 function isEmpty(txt){
     return txt == null || txt == "";
 }

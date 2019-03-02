@@ -20,6 +20,8 @@ import java.util.List;
 @Controller
 public class MainProjectController {
 
+    private LogUtil logUtil = new LogUtil(MainProjectController.class);
+
     @Autowired
     ProjectService projectService;
     @Autowired
@@ -58,7 +60,7 @@ public class MainProjectController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            LogUtil.saveErrorMsg("getProjectList", e);
+            logUtil.saveErrorMsg("getProjectList", e);
         }
         return ResponseMessage.fail("获取数据出错");
     }
@@ -74,7 +76,7 @@ public class MainProjectController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            LogUtil.saveErrorMsg("deleteGithub", e);
+            logUtil.saveErrorMsg("deleteGithub", e);
         }
         return ResponseMessage.fail("删除失败，请重试");
     }

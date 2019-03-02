@@ -148,7 +148,7 @@ public class TokenUtil {
     }
 
     public static void main(String[] args) throws Exception {
-        String jwt = getToken(new User(1L,"你是逗逼"));
+        String jwt = getToken("");
         System.out.println("jwt:"+jwt);
         System.out.println("verifyJWT:"+verifyJWT(jwt));
     }

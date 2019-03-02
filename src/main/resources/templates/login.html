@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head th:replace="layout/head :: htmlhead" th:with="title='登陆'"></head>
+<body>
+    <div class="layui-container" style="height: 100%">
+
+        <fieldset class="layui-elem-field layui-field-title" style="margin-top: 6%">
+            <legend style="margin-left: 40%">
+                <span style="font-weight: bold;font-size:22px;">后台管理系统</span>
+            </legend>
+        </fieldset>
+
+        <div class="layui-row">
+            <div class="layui-col-xs4">
+                <div class="grid-demo">
+                    &nbsp;
+                </div>
+            </div>
+            <div class="layui-col-xs6">
+                <div class="grid-demo">
+                    <form class="layui-form" action="">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">用户名</label>
+                            <div class="layui-input-inline">
+                                <input id="username" name="username" lay-verify="required" autocomplete="off" class="layui-input" type="text"/>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">密码</label>
+                            <div class="layui-input-inline">
+                                <input id="password" name="password" lay-verify="required" autocomplete="off" class="layui-input" type="password"/>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">验证码</label>
+                            <div class="layui-input-inline" style="width: 100px;">
+                                <input id="code" name="code" lay-verify="required" autocomplete="off" class="layui-input" type="text"/>
+                            </div>
+                            <div class="layui-input-inline" style="width: 120px;">
+                                <canvas id="canvas" width="120" height="38"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item" style="margin-top: -20px;">
+                            <label class="layui-form-label"></label>
+                            <div class="layui-inline">
+                                <input type="checkbox" name="rememberMe" lay-skin="primary"  title="记住我"/>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label"></label>
+                            <div class="layui-input-inline">
+                                <button class="layui-btn" lay-submit lay-filter="toLogin">立即提交</button>
+                                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+<script th:src="@{/js/validate.js}"></script>
+<script>
+    window.onload = function () {
+        if (window.parent.window != window) {
+            alert("检测到你暂无该权限，或者权限配置发生了变更，请重新登录");
+            window.top.location = "/login";
+        }
+    };
+    var code = drawPic();
+    layui.use(['form', 'layer', 'jquery'], function () {
+        var form = layui.form
+            ,layer = layui.layer
+            ,$$ = layui.$;
+        form.on('submit(toLogin)', function (data) {
+            var inputCode = data.field.code;
+            if(code.toLowerCase() != inputCode.toLowerCase()){
+                layer.alert("验证码错误，请重新输入");
+            } else {
+                var url = "userLogin";
+                var data_ = {
+                    username: data.field.username,
+                    password: data.field.password,
+                    rememberMe: data.field.rememberMe
+                };
+                $$.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: url,
+                    data: data_,
+                    beforeSend: function () {
+                        console.log('提交之前');
+                        layer.load(
+                            2,
+                            {time: 5000}
+                        );
+                    },
+                    success: function (result) {
+                        layer.closeAll();
+                        if(result.code == 0){
+                            alert("登录成功!!!!");
+                            window.location.href = "/index";
+                        } else {
+                            layer.alert(result.msg);
+                        }
+                    },
+                    error: function (result) {
+                        alert('登录失败，请重试--------------')
+                        console.log(result)
+                    }
+                });
+            }
+            return false;
+        })
+    });
+</script>
+</html>

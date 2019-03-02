@@ -10,19 +10,23 @@ public class LogUtil {
          logger = LoggerFactory.getLogger(c);
     }
 
-    public static void info(Object o){
-        info(LogUtil.class.getSimpleName(), o);
+    public void info(String s){
+        logger.info(s);
     }
 
-    public static void info(String s, Object o){
+    public void info(String s, Object o){
         logger.info(s, o);
     }
 
-    public static void error(String s, Throwable t){
+    public void debug(String s){
+        logger.debug(s);
+    }
+
+    public void error(String s, Throwable t){
         logger.error(s, t);
     }
 
-    public static void saveErrorMsg(String s, Throwable t){
+    public void saveErrorMsg(String s, Throwable t){
         info("------------------------"+s+"出错啦---------------------------");
         error(s, t);
     }

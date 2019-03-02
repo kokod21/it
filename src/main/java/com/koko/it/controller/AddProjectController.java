@@ -20,6 +20,8 @@ import java.util.List;
 @Controller
 public class AddProjectController {
 
+    private LogUtil logUtil = new LogUtil(AddProjectController.class);
+
     @Autowired
     ClassifyService classifyService;
     @Autowired
@@ -66,7 +68,7 @@ public class AddProjectController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            LogUtil.saveErrorMsg("saveGithub", e);
+            logUtil.saveErrorMsg("saveGithub", e);
         }
         return ResponseMessage.fail("保存数据错误");
     }
