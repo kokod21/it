@@ -36,7 +36,7 @@ public class ShiroRealm extends AuthorizingRealm{
             simpleAuthorizationInfo.addStringPermission("*");
             return simpleAuthorizationInfo;
         } else {
-            User user = userService.findByUsername(username);
+            User user = userService.findByUserName(username);
             if (user != null) {
                 List<Map<String, Object>> lists = permissionService.getPermissionByUserId(user.getId());
                 for (Map<String, Object> list : lists) {
@@ -56,10 +56,10 @@ public class ShiroRealm extends AuthorizingRealm{
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         String username = authenticationToken.getPrincipal().toString();
-        User user = userService.findByUsername(username);
+        User user = userService.findByUserName(username);
         if (user != null) {
             String salt = username+ String.valueOf(user.getPassword());
-            return new SimpleAuthenticationInfo(user.getUsername(), user.getPassword(), ByteSource.Util.bytes(salt), getName());
+            return new SimpleAuthenticationInfo(user.getUserName(), user.getPassword(), ByteSource.Util.bytes(salt), getName());
         } else {
             return new SimpleAuthenticationInfo(Constants.DEFAULT_NAME, DigestUtils.md5Hex(Constants.DEFAULT_PASSWORD), getName());
         }

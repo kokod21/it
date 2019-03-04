@@ -9,22 +9,23 @@ import javax.persistence.Id;
 public class Permission {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private String id;
+    private Integer id;
     private String name;
-    private String pid;
-    private String istype;
-    private String descpt;
+    private Integer pid;
+    private Integer sort;
+    private Integer classify;
+    private String describe;
     private String code;
-    private String page;
+    private String url;
     private String icon;
     private String insertTime;
     private String updateTime;
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -36,28 +37,12 @@ public class Permission {
         this.name = name;
     }
 
-    public String getPid() {
+    public Integer getPid() {
         return pid;
     }
 
-    public void setPid(String pid) {
+    public void setPid(Integer pid) {
         this.pid = pid;
-    }
-
-    public String getIstype() {
-        return istype;
-    }
-
-    public void setIstype(String isType) {
-        this.istype = isType;
-    }
-
-    public String getDescpt() {
-        return descpt;
-    }
-
-    public void setDescpt(String descpt) {
-        this.descpt = descpt;
     }
 
     public String getCode() {
@@ -66,14 +51,6 @@ public class Permission {
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public String getPage() {
-        return page;
-    }
-
-    public void setPage(String page) {
-        this.page = page;
     }
 
     public String getIcon() {
@@ -98,5 +75,37 @@ public class Permission {
 
     public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
+
+    public Integer getClassify() {
+        return classify;
+    }
+
+    public void setClassify(Integer classify) {
+        this.classify = classify;
+    }
+
+    public String getDescribe() {
+        return describe;
+    }
+
+    public void setDescribe(String describe) {
+        this.describe = describe;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

@@ -44,7 +44,7 @@
                         <a href="javascript:;"><span th:text="${item.name}"></span></a>
                         <dl class="layui-nav-child" th:each="itemInner : ${lists}">
                             <dd th:if="${item.id} == ${itemInner.pid}">
-                                <a href="javascript:;" th:attr="data-url=${itemInner.page}">
+                                <a href="javascript:;" th:attr="data-url=${itemInner.url}">
                                     <span th:text="${itemInner.name}"></span>
                                 </a>
                             </dd>

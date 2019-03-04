@@ -7,34 +7,23 @@ public class User {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Long id;
-    private String username;
+    private Integer id;
+    private String userName;
     private String mobile;
     private String email;
     private String password;
-    private String insertUid;
+    private String insertUserId;
     private String insertTime;
     private String updateTime;
     private Integer isDel; //是否删除（0：正常；1：已删）
-    private Integer isJob; //是否在职（0：正常；1，离职）
-    private String mcode;
-    private String sendTime;
-    private String version;
+    private String remark;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String userName) {
-        this.username = userName;
     }
 
     public String getMobile() {
@@ -61,14 +50,6 @@ public class User {
         this.password = password;
     }
 
-    public String getInsertUid() {
-        return insertUid;
-    }
-
-    public void setInsertUid(String insertUid) {
-        this.insertUid = insertUid;
-    }
-
     public String getInsertTime() {
         return insertTime;
     }
@@ -93,41 +74,32 @@ public class User {
         this.isDel = isDel;
     }
 
-    public Integer getIsJob() {
-        return isJob;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setIsJob(Integer isJob) {
-        this.isJob = isJob;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public String getMcode() {
-        return mcode;
+    public String getInsertUserId() {
+        return insertUserId;
     }
 
-    public void setMcode(String mcode) {
-        this.mcode = mcode;
+    public void setInsertUserId(String insertUserId) {
+        this.insertUserId = insertUserId;
     }
 
-    public String getSendTime() {
-        return sendTime;
+    public String getRemark() {
+        return remark;
     }
 
-    public void setSendTime(String sendTime) {
-        this.sendTime = sendTime;
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
-
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
-    }
-
 
     @Override public String toString() {
-        return "UserDTO{" + "id=" + id + ", username='" + username + '\''
+        return "UserDTO{" + "id=" + id + ", userName='" + userName + '\''
                 + ", mobile='" + mobile + '\'' + ", email='" + email + '\''
                 + ", password='" + password + '\'' + ", code='" ;
     }

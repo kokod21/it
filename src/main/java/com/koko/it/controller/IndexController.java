@@ -43,7 +43,7 @@ public class IndexController {
                 List<Permission> lists = permissionService.findByNameNot("");
                 httpServletRequest.setAttribute("lists", lists);
             } else {
-                User loginUser = userService.findByUsername(username);
+                User loginUser = userService.findByUserName(username);
                 List<Map<String, Object>> lists = permissionService.getPermissionByUserId(loginUser.getId());
                 httpServletRequest.setAttribute("lists", lists);
             }

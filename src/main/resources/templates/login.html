@@ -22,7 +22,7 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">用户名</label>
                             <div class="layui-input-inline">
-                                <input id="username" name="username" lay-verify="required" autocomplete="off" class="layui-input" type="text"/>
+                                <input id="userName" name="userName" lay-verify="required" autocomplete="off" class="layui-input" type="text"/>
                             </div>
                         </div>
 
@@ -80,13 +80,14 @@
             ,layer = layui.layer
             ,$$ = layui.$;
         form.on('submit(toLogin)', function (data) {
+            console.log(data);
             var inputCode = data.field.code;
             if(code.toLowerCase() != inputCode.toLowerCase()){
                 layer.alert("验证码错误，请重新输入");
             } else {
                 var url = "userLogin";
                 var data_ = {
-                    username: data.field.username,
+                    userName: data.field.userName,
                     password: data.field.password,
                     rememberMe: data.field.rememberMe
                 };

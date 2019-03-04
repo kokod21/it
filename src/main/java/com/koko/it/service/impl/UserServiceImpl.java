@@ -19,12 +19,12 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long> implements User
     }
 
     @Override
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public User findByUserName(String userName) {
+        return userRepository.findByUserName(userName);
     }
 
     @Override
-    public User findByUsernameAndPasswordAndIsDel(String username, String password, Integer isDel) {
-        return userRepository.findByUsernameAndPasswordAndIsDel(username, password, isDel);
+    public User findByUserNameAndPasswordAndIsDel(String username, String password, Integer isDel) {
+        return userRepository.findByUserNameAndPasswordAndIsDel(username, password, isDel);
     }
 }

@@ -45,7 +45,7 @@ public class LoginController {
         }
         try {
             // shiro登录验证开始
-            UsernamePasswordToken token  = new UsernamePasswordToken(user.getUsername(), DigestUtils.md5Hex(user.getPassword()));
+            UsernamePasswordToken token  = new UsernamePasswordToken(user.getUserName(), DigestUtils.md5Hex(user.getPassword()));
             // TODO 1、 封装用户名、密码、是否记住我到token令牌对象
             // token.setRememberMe(true);
             // 2、 Subject调用login
@@ -53,7 +53,7 @@ public class LoginController {
             // 在调用了login方法后,SecurityManager会收到AuthenticationToken,并将其发送给已配置的Realm执行必须的认证检查
             // 每个Realm都能在必要时对提交的AuthenticationTokens作出反应
             // 所以这一步在调用login(token)方法时,它会走到MyRealm.doGetAuthenticationInfo()方法中,具体验证方式详见此方法
-            logUtil.debug("用户登录，用户验证开始！user=" + user.getUsername());
+            System.out.println("用户登录，用户验证开始！user=" + user.getUserName());
             subject.login(token);
             return ResponseMessage.ok();
         } catch (Exception e) {
