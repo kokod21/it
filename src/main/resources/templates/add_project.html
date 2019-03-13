@@ -52,7 +52,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">所属分类</label>
                 <div class="layui-input-block">
-                    <select name="classify" lay-verify="required">
+                    <select name="classifyId" lay-verify="required">
                         <option value=""></option>
                         <option th:selected="${gp} != null?${gp.classifyId == item.id}:false" th:each="item:${classifies}" th:value="${item.id}" th:text="${item.classifyName}"></option>
                     </select>
@@ -61,7 +61,7 @@
 
             <div class="layui-form-item">
                 <div class="layui-input-block">
-                    <button class="layui-btn" lay-submit lay-filter="github">立即提交</button>
+                    <button class="layui-btn" lay-submit lay-filter="project">立即提交</button>
                     <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                 </div>
             </div>
@@ -77,11 +77,11 @@
         var form = layui.form
             ,layer = layui.layer
             ,$$ = layui.$;
-        form.on('submit(github)', function (data) {
-            var url = "saveGithub";
+        form.on('submit(project)', function (data) {
+            var url = "saveProject";
             var data1 = {
                 id : data.field.id
-                ,classify_id: data.field.classify
+                ,classifyId: data.field.classifyId
                 ,url: data.field.url
                 ,title: data.field.title
                 ,author: data.field.author
@@ -99,10 +99,15 @@
                     );
                 },
                 success: function (result) {
-                    alert('保存数据成功--------------');
-                    layer.closeAll();
-                    console.log(result)
-                    location.replace("main_project")
+                    console.log(result);
+                    if(result.code == 0){
+                        alert('保存数据成功--------------');
+                        layer.closeAll();
+                        console.log(result)
+                        location.replace("main_project")
+                    } else {
+                        layer.alert(result.msg);
+                    }
                 },
                 error: function (result) {
                     layer.closeAll();

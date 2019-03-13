@@ -40,35 +40,31 @@ public class AddProjectController {
         return "add_project";
     }
 
-    @RequestMapping(value = "/saveGithub", method = RequestMethod.POST)
+    @RequestMapping(value = "/saveProject", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseMessage saveGithub(Long id, Long classify_id, String url, String title, String author, String remark){
-        System.out.println("saveGithub----------------------");
+    public ResponseMessage saveProject(Project project){
+        System.out.println("saveProject----------------------");
         try {
-            Project project;
-            if(id == null){
-                project = new Project();
-                project.setClassifyId(classify_id);
-                project.setUrl(url);
-                project.setTitle(title);
-                project.setAuthor(author);
-                project.setRemark(remark);
-                project.setCreateTime(TimeUtils.todayToString(TimeUtils.TODAY_TIME));
+            if(project.getId() == null){
+                Project gp = projectService.save(project);
+                if (gp != null) {
+                    return ResponseMessage.ok(gp);
+                }
             } else {
-                project = projectService.findById(id).get();
-                project.setClassifyId(classify_id);
-                project.setUrl(url);
-                project.setTitle(title);
-                project.setAuthor(author);
-                project.setRemark(remark);
-            }
-            Project gp = projectService.save(project);
-            if (gp != null) {
-                return ResponseMessage.ok(gp);
+                Project oldProject = projectService.findById(project.getId()).get();
+                oldProject.setClassifyId(project.getClassifyId());
+                oldProject.setUrl(project.getUrl());
+                oldProject.setTitle(project.getTitle());
+                oldProject.setAuthor(project.getAuthor());
+                oldProject.setRemark(project.getRemark());
+                Project gp = projectService.save(oldProject);
+                if (gp != null) {
+                    return ResponseMessage.ok(gp);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
-            logUtil.saveErrorMsg("saveGithub", e);
+            logUtil.saveErrorMsg("saveProject", e);
         }
         return ResponseMessage.fail("保存数据错误");
     }

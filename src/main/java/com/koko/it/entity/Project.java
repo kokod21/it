@@ -1,12 +1,9 @@
 package com.koko.it.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
-public class Project implements java.io.Serializable{
+public class Project extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -15,7 +12,6 @@ public class Project implements java.io.Serializable{
     private String url;
     private String title;
     private String author;
-    private String createTime;
     private String remark;
 
     public Long getId() {
@@ -58,13 +54,6 @@ public class Project implements java.io.Serializable{
         this.author = author;
     }
 
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
-    }
 
     public String getRemark() {
         return remark;

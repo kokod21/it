@@ -6,7 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Permission {
+public class Permission  extends BaseEntity{
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
@@ -18,8 +18,6 @@ public class Permission {
     private String code;
     private String url;
     private String icon;
-    private String insertTime;
-    private String updateTime;
 
     public Integer getId() {
         return id;
@@ -59,22 +57,6 @@ public class Permission {
 
     public void setIcon(String icon) {
         this.icon = icon;
-    }
-
-    public String getInsertTime() {
-        return insertTime;
-    }
-
-    public void setInsertTime(String insertTime) {
-        this.insertTime = insertTime;
-    }
-
-    public String getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(String updateTime) {
-        this.updateTime = updateTime;
     }
 
     public Integer getSort() {

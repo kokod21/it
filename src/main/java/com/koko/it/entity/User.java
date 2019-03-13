@@ -3,7 +3,7 @@ package com.koko.it.entity;
 import javax.persistence.*;
 
 @Entity
-public class User {
+public class User extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -12,9 +12,7 @@ public class User {
     private String mobile;
     private String email;
     private String password;
-    private String insertUserId;
-    private String insertTime;
-    private String updateTime;
+    private String createUserId;
     private Integer isDel; //是否删除（0：正常；1：已删）
     private String remark;
 
@@ -50,22 +48,6 @@ public class User {
         this.password = password;
     }
 
-    public String getInsertTime() {
-        return insertTime;
-    }
-
-    public void setInsertTime(String insertTime) {
-        this.insertTime = insertTime;
-    }
-
-    public String getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(String updateTime) {
-        this.updateTime = updateTime;
-    }
-
     public Integer getIsDel() {
         return isDel;
     }
@@ -82,12 +64,12 @@ public class User {
         this.userName = userName;
     }
 
-    public String getInsertUserId() {
-        return insertUserId;
+    public String getCreateUserId() {
+        return createUserId;
     }
 
-    public void setInsertUserId(String insertUserId) {
-        this.insertUserId = insertUserId;
+    public void setCreateUserId(String createUserId) {
+        this.createUserId = createUserId;
     }
 
     public String getRemark() {
