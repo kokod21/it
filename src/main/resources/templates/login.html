@@ -22,14 +22,14 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">用户名</label>
                             <div class="layui-input-inline">
-                                <input id="userName" name="userName" lay-verify="required" autocomplete="off" class="layui-input" type="text"/>
+                                <input id="userName" name="userName" value="pppppp" lay-verify="required" autocomplete="off" class="layui-input" type="text"/>
                             </div>
                         </div>
 
                         <div class="layui-form-item">
                             <label class="layui-form-label">密码</label>
                             <div class="layui-input-inline">
-                                <input id="password" name="password" lay-verify="required" autocomplete="off" class="layui-input" type="password"/>
+                                <input id="password" name="password" value="pppppp" lay-verify="required" autocomplete="off" class="layui-input" type="password"/>
                             </div>
                         </div>
 
@@ -43,7 +43,7 @@
                             </div>
                         </div>
 
-                        <div class="layui-form-item" style="margin-top: -20px;">
+                        <div class="layui-form-item" style="margin-top: -20px; display: none">
                             <label class="layui-form-label"></label>
                             <div class="layui-inline">
                                 <input type="checkbox" name="rememberMe" lay-skin="primary"  title="记住我"/>
@@ -79,6 +79,7 @@
         var form = layui.form
             ,layer = layui.layer
             ,$$ = layui.$;
+        $$("#code").val(code);
         form.on('submit(toLogin)', function (data) {
             console.log(data);
             var inputCode = data.field.code;

@@ -29,7 +29,7 @@ public class MainProjectController {
 
     @RequestMapping("/main_project")
     public String main_project(HttpServletRequest request){
-        List<Classify> classifies = classifyService.findAll();
+        List<Classify> classifies = classifyService.findByParentIdNot(0l);
         Classify classify = new Classify();
         classify.setClassifyName("====全部====");
         classifies.add(0, classify);

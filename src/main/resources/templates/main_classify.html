@@ -39,20 +39,24 @@
 <script>
     layui.use(['table', 'jquery'], function () {
         var table = layui.table
-            ,$ = layui.$;
+            ,$$ = layui.$;
 
+        $$('#add').click(function () {
+            location.href = "/add_classify";
+        });
+        
         //第一个实例
         table.render({
             elem: '#tb_data'
-            ,height: 350
+            ,height: 'full'
             ,url: 'getClassifyList' //数据接口
             ,page: false //开启分页
             ,cols: [
                 [ //表头
                     {field: 'id', title: 'ID', width:50, sort: true, fixed: 'left'}
-                    ,{field: 'classify_name', title: '分类1'}
-                    ,{field: 'parent_name', title: '父级分类2'}
-//                    ,{fixed: 'right', title: '操作', width:150, align:'center', toolbar: '#barDemo', fixed: 'right'} //这里的toolbar值是模板元素的选择器
+                    ,{field: 'classifyName', title: '名称'}
+                    ,{field: 'parentId', title: '父级分类', templet:'#classifyType'}
+                    ,{fixed: 'right', title: '操作', width:150, align:'center', toolbar: '#barDemo', fixed: 'right'} //这里的toolbar值是模板元素的选择器
                 ]
             ]
         });
@@ -66,20 +70,46 @@
                 console.log(data);
                 //do somehing
             } else if(layEvent === 'del'){ //删除
-                layer.confirm('真的删除行么', function(index){
-                    obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
-                    layer.close(index);
-                    //向服务端发送删除指令
+                layer.confirm('改操作将会删除当前分类及其子分类，确定要删除吗？', function(index){
+//                    obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+//                    layer.close(index);
+//                    //向服务端发送删除指令
+                    var url = "deleteClassify";
+                    var postData = {
+                        id: data.id
+                    };
+                    console.log(postData);
+                    $$.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: url,
+                        data: postData,
+                        beforeSend: function () {
+                            console.log('提交之前');
+                            layer.load(
+                                2,
+                                {time: 5000}
+                            );
+                        },
+                        success: function (result) {
+                            layer.closeAll();
+                            if(result.code == 0){
+                                alert('删除数据成功');
+                                location.reload();
+                            } else {
+                                layer.alert(result.msg);
+                            }
+                        },
+                        error: function (result) {
+                            layer.closeAll();
+                            alert('删除分类失败，请重试--------------')
+                            console.log(result)
+                        }
+                    });
                 });
             } else if(layEvent === 'edit'){ //编辑
-                //do something
                 console.log(data);
-
-                //同步更新缓存对应的值
-//                                obj.update({
-//                                    author: '123'
-//                                    ,title: 'xxx'
-//                                });
+                location.href="add_classify?id="+data.id;
             }
         });
 
@@ -90,4 +120,12 @@
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
+<script type="text/html" id="classifyType">
+    {{#  if(d.parentId == 0){ }}
+    <label style="color: red;">1级分类</label>
+    {{#  } else { }}
+    <label style="color: black;">2级分类</label>
+    {{#  } }}
+</script>
+
 </html>

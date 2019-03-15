@@ -20,19 +20,19 @@
     <div class="layui-layout layui-layout-admin">
         <div class="layui-header header header-demo">
             <div class="layui-header">
-                <div class="layui-logo" style="color:white; font-size: 20px;">这里是标题</div>
+                <div class="layui-logo" style="color:white; font-size: 20px;">后台管理系统</div>
                 <ul class="layui-nav layui-layout-right">
                     <li class="layui-nav-item">
                         <a href="javascript:;">
                             <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
-                            <label>未登录</label>
+                            <label th:text="${user.userName}"></label>
                         </a>
                         <dl class="layui-nav-child">
                             <dd><a href="javascript:;">基本资料</a></dd>
                             <dd><a href="javascript:;">安全设置</a></dd>
                         </dl>
                     </li>
-                    <li class="layui-nav-item"><a href="javascript:;">登录</a></li>
+                    <li class="layui-nav-item"><a href="javascript:;">退出登录</a></li>
                 </ul>
             </div>
         </div>

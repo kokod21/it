@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+    <style>
+        h1 {
+            height: 60px; line-height: 60px;margin-left: 50px;
+        }
+        .layui-form {
+            max-width: 600px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1 th:text="${title}">新增分类</h1>
+    </div>
+
+    <div>
+        <form class="layui-form" action="">
+            <input name="id" type="hidden" th:value="${classify}!=null?${classify.id}:''">
+            <div class="layui-form-item">
+                <label class="layui-form-label">名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="classifyName" th:value="${classify} != null?${classify.classifyName}:''" required  lay-verify="required" placeholder="请输入分类名称" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item" th:if="${classify} == null">
+                <label class="layui-form-label">分类级别</label>
+                <div class="layui-input-block">
+                    <select name="classifyType" lay-filter="classifyType">
+                        <option value="0" selected>一级分类</option>
+                        <option value="1">二级分类</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="classify_level_one_sel" class="layui-form-item" style="display: none">
+                <label class="layui-form-label">选择一级分类</label>
+                <div class="layui-input-block">
+                    <select id="parentId" name="parentId" required  lay-verify="required">
+                        <option value="0"></option>
+                        <option th:each="item:${lists}"  th:value="${item.id}" th:text="${item.classifyName}"></option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="classify">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+</body>
+
+<script th:src="@{/layui/layui.js}"></script>
+<script>
+    layui.use(['form', 'layer', 'jquery'], function () {
+        var form = layui.form
+            ,layer = layui.layer
+            ,$$ = layui.$;
+        form.on('select(classifyType)', function(data){
+            if(data.value == 1){
+                $$('#classify_level_one_sel').show();
+            } else {
+                $$('#classify_level_one_sel').hide();
+                $$('#parentId').val("0");
+            }
+        });
+
+        form.on('submit(classify)', function (data) {
+            var url = "saveClassify";
+            var postData = {
+                id: data.field.id
+                , classifyName: data.field.classifyName
+                , parentId: data.field.parentId
+            };
+            console.log(postData);
+            $$.ajax({
+                type: "POST",
+                dataType: "json",
+                url: url,
+                data: postData,
+                beforeSend: function () {
+                    console.log('提交之前');
+                    layer.load(
+                        2,
+                        {time: 5000}
+                    );
+                },
+                success: function (result) {
+                    alert('保存数据成功--------------');
+                    console.log(result)
+                    location.replace("main_classify")
+                },
+                error: function (result) {
+                    alert('保存失败，请重试--------------')
+                    console.log(result)
+                }
+            });
+            return false;
+        })
+    });
+</script>
+</html>

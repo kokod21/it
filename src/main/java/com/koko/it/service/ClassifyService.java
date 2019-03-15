@@ -6,5 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface ClassifyService extends BaseService<Classify, Long> {
-    List<Map<String, Object>> findAllClassify();
+    List<Classify> findByParentIdNot(Long parentId);
+
+    List<Classify> findByParentId(Long parentId);
+
+    void deleteClassifyById(Long id, Long parentId);
 }

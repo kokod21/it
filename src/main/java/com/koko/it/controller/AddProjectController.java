@@ -35,7 +35,7 @@ public class AddProjectController {
                 request.setAttribute("gp", gp);
             }
         }
-        List<Classify> classifies = classifyService.findAll();
+        List<Classify> classifies = classifyService.findByParentIdNot(0l);
         request.setAttribute("classifies", classifies);
         return "add_project";
     }
