@@ -7,16 +7,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-public class MainUserController {
+@RequestMapping("/system/role")
+public class SystemRoleController {
 
-    @RequestMapping("/main_user")
-    public String main_user(){
-        return "system/main_user";
+    @RequestMapping("/system_role")
+    public String main_role(){
+        return "system/role/system_role";
     }
 
-    @RequestMapping(value = "/getUserList", method = RequestMethod.GET)
+    @RequestMapping(value = "/get_role_list", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseMessage getUserList(int page, int limit) {
+    public ResponseMessage getRoleList(int page, int limit) {
         return ResponseMessage.fail("获取数据出错");
     }
 

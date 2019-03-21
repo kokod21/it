@@ -78,7 +78,7 @@
             ,layer = layui.layer
             ,$$ = layui.$;
         form.on('submit(project)', function (data) {
-            var url = "saveProject";
+            var url = "/main/project/save_project";
             var data1 = {
                 id : data.field.id
                 ,classifyId: data.field.classifyId
@@ -104,7 +104,7 @@
                         alert('保存数据成功--------------');
                         layer.closeAll();
                         console.log(result)
-                        location.replace("main_project")
+                        location.replace("/main/project/main_project")
                     } else {
                         layer.alert(result.msg);
                     }

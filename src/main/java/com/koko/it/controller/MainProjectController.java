@@ -1,5 +1,6 @@
 package com.koko.it.controller;
 
+import com.alibaba.druid.util.StringUtils;
 import com.koko.it.common.response.ResponseMessage;
 import com.koko.it.entity.Classify;
 import com.koko.it.entity.Project;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
+@RequestMapping("/main/project")
 public class MainProjectController {
 
     private LogUtil logUtil = new LogUtil(MainProjectController.class);
@@ -34,10 +36,23 @@ public class MainProjectController {
         classify.setClassifyName("====全部====");
         classifies.add(0, classify);
         request.setAttribute("classifies", classifies);
-        return "main_project";
+        return "main/project/main_project";
     }
 
-    @RequestMapping(value = "/getProjectList", method = RequestMethod.GET)
+    @RequestMapping("/add_project")
+    public String add_project(HttpServletRequest request, String id){
+        if(!StringUtils.isEmpty(id)){
+            Project gp = projectService.findById(Long.parseLong(id)).get();
+            if(gp != null){
+                request.setAttribute("gp", gp);
+            }
+        }
+        List<Classify> classifies = classifyService.findByParentIdNot(0l);
+        request.setAttribute("classifies", classifies);
+        return "main/project/add_project";
+    }
+
+    @RequestMapping(value = "/get_project_list", method = RequestMethod.GET)
     @ResponseBody
     public ResponseMessage getProjectList(int page, int limit, Long classify_id) {
         List<Project> projectList;
@@ -65,9 +80,40 @@ public class MainProjectController {
         return ResponseMessage.fail("获取数据出错");
     }
 
-    @RequestMapping(value = "/deleteGithub", method = RequestMethod.POST)
+
+    @RequestMapping(value = "/save_project", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseMessage deleteGithub(Long g_id){
+    public ResponseMessage saveProject(Project project){
+        System.out.println("saveProject----------------------");
+        try {
+            if(project.getId() == null){
+                Project gp = projectService.save(project);
+                if (gp != null) {
+                    return ResponseMessage.ok(gp);
+                }
+            } else {
+                Project oldProject = projectService.findById(project.getId()).get();
+                oldProject.setClassifyId(project.getClassifyId());
+                oldProject.setUrl(project.getUrl());
+                oldProject.setTitle(project.getTitle());
+                oldProject.setAuthor(project.getAuthor());
+                oldProject.setRemark(project.getRemark());
+                Project gp = projectService.save(oldProject);
+                if (gp != null) {
+                    return ResponseMessage.ok(gp);
+                }
+            }
+            return ResponseMessage.ok();
+        } catch (Exception e) {
+            e.printStackTrace();
+            logUtil.saveErrorMsg("saveProject", e);
+        }
+        return ResponseMessage.fail("保存数据错误");
+    }
+
+    @RequestMapping(value = "/delete_project", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseMessage deleteProject(Long g_id){
         try {
             Project gp = projectService.findById(g_id).get();
             if(gp != null){
@@ -76,7 +122,7 @@ public class MainProjectController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            logUtil.saveErrorMsg("deleteGithub", e);
+            logUtil.saveErrorMsg("deleteProject", e);
         }
         return ResponseMessage.fail("删除失败，请重试");
     }

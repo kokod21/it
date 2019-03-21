@@ -52,7 +52,7 @@
 
         layer.load(2);
         $('#add').on('click', function () {
-            location.href="add_project";
+            location.href="/main/project/add_project";
         });
 
         $("#search").on('click',function () {
@@ -84,7 +84,7 @@
         table.render({
             elem: '#tb_data'
             ,height: 'full-150'
-            ,url: 'getProjectList' //数据接口
+            ,url: '/main/project/get_project_list' //数据接口
             ,page: true //开启分页
             ,even: true // 设置间隔
             ,toolbar: true
@@ -96,7 +96,8 @@
                     {field: 'id', title: 'ID', width:50, sort: true, fixed: 'left'}
                     ,{field: 'title', title: '名称', width:200}
                     ,{field: 'author', title: '作者', width:160}
-                    ,{field: 'createTime', title: '时间', width:160}
+                    ,{field: 'createTime', title: '创建时间', width:160}
+                    ,{field: 'updateTime', title: '最后编辑时间', width:160}
                     ,{field: 'url', title: '网址url', width: 400}
                     ,{field: 'remark', title: '备注'}
                     ,{fixed: 'right', title: '操作', width:150, align:'center', toolbar: '#barDemo', fixed: 'right'} //这里的toolbar值是模板元素的选择器
@@ -118,7 +119,7 @@
                     layer.close(index);
                     //向服务端发送删除指令
                     console.log(data);
-                    var url = "deleteGithub";
+                    var url = "/main/project/delete_project";
                     var params = {g_id: data.id};
                     $.ajax({
                         type: "POST",
@@ -138,7 +139,7 @@
             } else if(layEvent === 'edit'){ //编辑
                 //do something
                 console.log(data.id);
-                location.href="add_project?id="+data.id;
+                location.href="/main/project/add_project?id="+data.id;
 
 ////                同步更新缓存对应的值
 //                obj.update({

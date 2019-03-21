@@ -19,7 +19,7 @@ public interface PermissionRepository extends BaseRepository<Permission, Long> {
             " LEFT JOIN role r ON r.id=rp.role_id " +
             " LEFT JOIN user_role ur ON ur.role_id=r.id " +
             " WHERE ur.user_id=:userId AND p.name <> '' GROUP BY p.id ORDER BY p.zindex", nativeQuery = true)
-    List<Map<String, Object>> getPermissionByUserId(@Param("userId") Integer userId);
+    List<Map<String, Object>> getPermissionByUserId(@Param("userId") Long userId);
 
     List<Permission> findByNameNot(String name);
 }

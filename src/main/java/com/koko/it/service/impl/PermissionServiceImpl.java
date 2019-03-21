@@ -25,7 +25,7 @@ public class PermissionServiceImpl extends BaseServiceImpl<Permission, Long> imp
     }
 
     @Override
-    public List<Map<String, Object>> getPermissionByUserId(Integer userId) {
+    public List<Map<String, Object>> getPermissionByUserId(Long userId) {
         return permissionRepository.getPermissionByUserId(userId);
     }
 

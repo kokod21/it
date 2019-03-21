@@ -55,11 +55,14 @@ public class ShiroRealm extends AuthorizingRealm{
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        String username = authenticationToken.getPrincipal().toString();
+        UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) authenticationToken;
+        String username = usernamePasswordToken.getUsername();
+        String password = new String(usernamePasswordToken.getPassword());
+
         if(username.equals(Constants.DEFAULT_NAME)){
             return new SimpleAuthenticationInfo(Constants.DEFAULT_NAME, DigestUtils.md5Hex(Constants.DEFAULT_PASSWORD), getName());
         } else {
-            User user = userService.findByUserName(username);
+            User user = userService.findByUserNameAndPasswordAndIsDel(username, password, 0);
             String salt = username+ String.valueOf(user.getPassword());
             return new SimpleAuthenticationInfo(user.getUserName(), user.getPassword(), ByteSource.Util.bytes(salt), getName());
         }

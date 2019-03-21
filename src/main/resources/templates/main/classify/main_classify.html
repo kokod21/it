@@ -42,14 +42,14 @@
             ,$$ = layui.$;
 
         $$('#add').click(function () {
-            location.href = "/add_classify";
+            location.href = "/main/classify/add_classify";
         });
         
         //第一个实例
         table.render({
             elem: '#tb_data'
             ,height: 'full'
-            ,url: 'getClassifyList' //数据接口
+            ,url: '/main/classify/get_classify_list' //数据接口
             ,page: false //开启分页
             ,cols: [
                 [ //表头
@@ -74,7 +74,7 @@
 //                    obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
 //                    layer.close(index);
 //                    //向服务端发送删除指令
-                    var url = "deleteClassify";
+                    var url = "/main/classify/delete_classify";
                     var postData = {
                         id: data.id
                     };
@@ -109,7 +109,7 @@
                 });
             } else if(layEvent === 'edit'){ //编辑
                 console.log(data);
-                location.href="add_classify?id="+data.id;
+                location.href="/main/classify/add_classify?id="+data.id;
             }
         });
 

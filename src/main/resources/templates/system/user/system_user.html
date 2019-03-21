@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+    <style>
+        h1 {
+            height: 60px; line-height: 60px;margin-left: 20px;
+        }
+        .layui-btn-group {
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>用户管理</h1>
+    </div>
+    <hr >
+    <div class="layui-row">
+        <div class="layui-col-md10">
+            <div class="layui-btn-group" >
+                <button id="add" class="layui-btn"><i class="layui-icon">&#xe654;</i>增加</button>
+            </div>
+        </div>
+    </div>
+    <table id="tb_data" lay-filter="user"></table>
+</body>
+
+<script th:src="@{/layui/layui.js}"></script>
+<script>
+    layui.use(['jquery','table'], function () {
+        var table = layui.table
+            , $ = layui.$;
+
+        $('#add').on('click', function () {
+            location.href="/system/user/add_user";
+        });
+
+        $("#search").on('click',function () {
+            var keyword = $("#search_key").val();
+            alert(keyword);
+//            //表格重载
+//            table.reload('tb_data',{
+//                url: 'getBlogList'
+//                , where:{
+//                    keyword:keyword
+//                }
+//            })
+        });
+
+        //获取表格数据
+        var tb1 = table.render({
+            elem: '#tb_data'
+            ,height: 'full-150'
+            ,url: '/system/user/get_user_list' //数据接口
+            ,page: true //开启分页
+            ,even: true // 设置间隔
+            ,id: 'tb_data'
+            ,cols: [
+                [ //表头
+                    {field: 'id', title: 'ID', width:50, sort: true, fixed: 'left'}
+                    ,{field: 'user_name', title: '姓名', width:100}
+                    ,{field: 'mobile', title: '电话', width:150}
+                    ,{field: 'email', title: '邮箱', width:200}
+                    ,{field: 'role_name', title: '角色名称', width:200}
+                    ,{field: 'create_t', title: '创建时间', width:200, sort: true}
+                    ,{field: 'create_user_name', title: '创建人', width:150}
+                    ,{field: 'update_t', title: '修改时间', width:200, sort: true}
+                    ,{field: 'update_user_name', title: '修改人', width:150}
+                    ,{field: 'status', title: '用户状态', width:100, templet: '#isDel'}
+                    ,{fixed: 'right', title: '操作', width:200, align:'center', toolbar: '#tbOperate', fixed: 'right'} //这里的toolbar值是模板元素的选择器
+                ]
+            ]
+        });
+
+        //监听表格右侧工具条按钮
+        table.on('tool(user)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+            var data = obj.data; //获得当前行数据
+            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+            var tr = obj.tr; //获得当前行 tr 的DOM对象
+            if(layEvent === 'del'){ //删除
+                layer.confirm('确定要删除当前用户吗？', function(){
+                    updateUser(layer, $, data.id, 1, '删除', "/system/user/set_user_delete");
+                });
+            } else if(layEvent === 'edit'){ //编辑
+                console.log(data);
+                location.href = "/system/user/add_user?id="+data.id;
+            } else if(layEvent === 'recover'){ //恢复
+                layer.confirm('恢复当前用户？', function(){
+                    updateUser(layer, $,data.id, 0, '恢复', "/system/user/set_user_delete");
+                });
+            } else if(layEvent === 'dead_del'){
+                layer.confirm('该操作不可恢复，确定要删除该用户吗？', function(){
+                    updateUser(layer, $,data.id, 0, '彻底删除', "/system/user/delete_user");
+                });
+            }
+        });
+
+    });
+    
+    
+    function updateUser(layer,$, id, isDel, msg, url) {
+        var postData = {
+            id: id,
+            is_del: isDel
+        };
+        console.log(postData);
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: url,
+            data: postData,
+            beforeSend: function () {
+                console.log('提交之前');
+                layer.load(
+                    2,
+                    {time: 5000}
+                );
+            },
+            success: function (result) {
+                layer.closeAll();
+                if(result.code == 0){
+                    alert(msg+'用户成功');
+                    location.reload();
+                } else {
+                    layer.alert(result.msg);
+                }
+            },
+            error: function (result) {
+                layer.closeAll();
+                alert(msg+'用户失败，请重试--------------')
+                console.log(result)
+            }
+        });
+    }
+    
+</script>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script type="text/html" id="isDel">
+    {{#  if(d.is_del == 0){ }}
+    <input type="checkbox" lay-skin="switch" lay-text="正常|删除" checked disabled>
+    {{#  } else { }}
+    <input type="checkbox" lay-skin="switch" lay-text="正常|删除" disabled>
+    {{#  } }}
+</script>
+
+<script type="text/html" id="tbOperate">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    {{#  if(d.is_del == 0){ }}
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    {{#  } else { }}
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="recover">恢复</a>
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="dead_del">彻底删除</a>
+    {{#  } }}
+</script>
+
+</html>

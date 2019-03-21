@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+    <style>
+        h1 {
+            height: 60px; line-height: 60px;margin-left: 50px;
+        }
+        .layui-form {
+            max-width: 600px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1 th:text="${title}"></h1>
+    </div>
+
+    <div>
+        <form class="layui-form" action="">
+            <input type="hidden" name="isDel" value="0">
+            <input name="id" type="hidden" th:value="${user} != null?${user.id}:''">
+            <div class="layui-form-item">
+                <label class="layui-form-label">姓名</label>
+                <div class="layui-input-block">
+                    <input th:value="${user} != null?${user.user_name}:''" type="text" name="userName" required  lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">电话</label>
+                <div class="layui-input-block">
+                    <input th:value="${user} != null?${user.mobile}:''" type="text" name="mobile" required  lay-verify="required" placeholder="电话" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">邮箱</label>
+                <div class="layui-input-block">
+                    <input th:value="${user} != null?${user.email}:''" type="text" name="email" required  lay-verify="required" placeholder="请输入邮箱" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item" th:if="${user == null}">
+                <label class="layui-form-label">密码</label>
+                <div class="layui-input-block">
+                    <input th:value="${user} != null?${user.password}:''" type="text" name="password" required  lay-verify="required" placeholder="请输入登录密码" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">备注</label>
+                <div class="layui-input-block">
+                    <textarea th:text="${user} != null?${user.remark}:''" name="remark" required  lay-verify="required" placeholder="请输入备注信息" autocomplete="off" class="layui-textarea"></textarea>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">选择角色</label>
+                <div class="layui-input-block">
+                    <input type="radio" lay-filter="role_sel" name="role"
+                           th:each="item: ${roleList}" th:value="${item.id}" th:title="${item.roleName}"
+                            th:checked="${user}==null?false:${user.role_id} == ${item.id}">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="project">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+</body>
+
+<script th:src="@{/layui/layui.js}"></script>
+<script>
+    var roleValue;
+    layui.use(['form', 'layer', 'jquery'], function () {
+        var form = layui.form
+            ,layer = layui.layer
+            ,$ = layui.$;
+        form.on('submit(project)', function (data) {
+            var url = "/system/user/save_user";
+            var postData = data.field;
+            postData['roleId'] = roleValue;
+            console.log(postData);
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: url,
+                data: postData,
+                beforeSend: function(){
+                    layer.load(
+                        1,
+                        {time: 5000}
+                    );
+                },
+                success: function (result) {
+                    console.log(result);
+                    if(result.code == 0){
+                        alert('保存用户成功--------------');
+                        layer.closeAll();
+                        console.log(result);
+                        location.replace("/system/user/system_user")
+                    } else {
+                        layer.alert(result.msg);
+                    }
+                },
+                error: function (result) {
+                    layer.closeAll();
+                    alert('保存失败，请重试--------------')
+                    console.log(result)
+                }
+            });
+            return false;
+        })
+
+        form.on('radio(role_sel)', function(data){
+            roleValue = data.value;
+            console.log(roleValue); //被点击的radio的value值
+        });
+    });
+</script>
+</html>

@@ -7,20 +7,22 @@ public class User extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
+    @Column(unique = true)
     private String userName;
     private String mobile;
     private String email;
     private String password;
-    private String createUserId;
+    private Long createUserId;
+    private Long updateUserId;
     private Integer isDel; //是否删除（0：正常；1：已删）
     private String remark;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -64,11 +66,11 @@ public class User extends BaseEntity{
         this.userName = userName;
     }
 
-    public String getCreateUserId() {
+    public Long getCreateUserId() {
         return createUserId;
     }
 
-    public void setCreateUserId(String createUserId) {
+    public void setCreateUserId(Long createUserId) {
         this.createUserId = createUserId;
     }
 
@@ -78,6 +80,14 @@ public class User extends BaseEntity{
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public Long getUpdateUserId() {
+        return updateUserId;
+    }
+
+    public void setUpdateUserId(Long updateUserId) {
+        this.updateUserId = updateUserId;
     }
 
     @Override public String toString() {
