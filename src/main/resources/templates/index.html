@@ -25,14 +25,14 @@
                     <li class="layui-nav-item">
                         <a href="javascript:;">
                             <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
-                            <label th:text="${user.userName}"></label>
+                            <label th:text="${user} != null?${user.userName}:''"></label>
                         </a>
                         <dl class="layui-nav-child">
                             <dd><a href="javascript:;">基本资料</a></dd>
                             <dd><a href="javascript:;">安全设置</a></dd>
                         </dl>
                     </li>
-                    <li class="layui-nav-item"><a href="javascript:;">退出登录</a></li>
+                    <li class="layui-nav-item" id="logout"><a href="javascript:;">退出登录</a></li>
                 </ul>
             </div>
         </div>
@@ -67,9 +67,42 @@
 
 <script th:src="@{/layui/layui.js}"></script>
 <script>
-    layui.use(['element', 'jquery'], function () {
-        var element = layui.element
+    layui.use(['layer','element', 'jquery'], function () {
+        var layer = layui.layer
+            ,element = layui.element
             , $ = layui.$;
+
+        $('#logout').on('click', function () {
+            var url = "userLogout";
+            console.log(url+"------------------");
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: url,
+                data: {},
+                beforeSend: function () {
+                    console.log('提交之前');
+                    layer.load(
+                        2,
+                        {time: 5000}
+                    );
+                },
+                success: function (result) {
+                    console.log(result);
+                    layer.closeAll();
+                    if(result.code == 0){
+                        alert("退出登录成功!!!!");
+                        window.parent.location.replace("/login");
+                    } else {
+                        layer.alert(result.msg);
+                    }
+                },
+                error: function (result) {
+                    alert('退出登录失败，请重试--------------')
+                    console.log(result)
+                }
+            });
+        });
 
         element.on('nav(test)', function(elem){
             var url = elem.attr('data-url');

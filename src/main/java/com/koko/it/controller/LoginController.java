@@ -38,8 +38,6 @@ public class LoginController {
     @ResponseBody
     public ResponseMessage userLogin(User user, boolean rememberMe){
         System.out.println("userLogin=============================================");
-        System.out.println(user);
-        System.out.println(rememberMe);
         if (user == null) {
             return ResponseMessage.fail("登录用户参数错误");
         }

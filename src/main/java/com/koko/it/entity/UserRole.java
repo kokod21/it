@@ -10,16 +10,16 @@ public class UserRole {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    public Long userRoleId;
+    public Long id;
     public Long userId;
     public Long roleId;
 
-    public Long getUserRoleId() {
-        return userRoleId;
+    public Long getId() {
+        return id;
     }
 
-    public void setUserRoleId(Long userRoleId) {
-        this.userRoleId = userRoleId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getUserId() {

@@ -12,9 +12,9 @@ public class Role extends BaseEntity {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     public Long id;
     public String roleName;
-    public String describe;
-    public String code;
-    public Integer createUserId;
+    public String introduction;
+//    public String code;
+    public Long createUserId;
 
     public Long getId() {
         return id;
@@ -32,27 +32,27 @@ public class Role extends BaseEntity {
         this.roleName = roleName;
     }
 
-    public String getDescribe() {
-        return describe;
+    public String getIntroduction() {
+        return introduction;
     }
 
-    public void setDescribe(String describe) {
-        this.describe = describe;
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
     }
 
-    public String getCode() {
-        return code;
-    }
+//    public String getCode() {
+//        return code;
+//    }
+//
+//    public void setCode(String code) {
+//        this.code = code;
+//    }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public Integer getCreateUserId() {
+    public Long getCreateUserId() {
         return createUserId;
     }
 
-    public void setCreateUserId(Integer createUserId) {
+    public void setCreateUserId(Long createUserId) {
         this.createUserId = createUserId;
     }
 }

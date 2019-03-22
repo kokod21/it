@@ -9,21 +9,21 @@ import javax.persistence.Id;
 public class Permission  extends BaseEntity{
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     private String name;
-    private Integer pid;
-    private Integer sort;
-    private Integer classify;
+    private Long pid; //（0 一级分类  1 二级分类）
+    private Long sort;
+    private Long classify;
     private String describe;
     private String code;
     private String url;
     private String icon;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -35,11 +35,11 @@ public class Permission  extends BaseEntity{
         this.name = name;
     }
 
-    public Integer getPid() {
+    public Long getPid() {
         return pid;
     }
 
-    public void setPid(Integer pid) {
+    public void setPid(Long pid) {
         this.pid = pid;
     }
 
@@ -59,19 +59,19 @@ public class Permission  extends BaseEntity{
         this.icon = icon;
     }
 
-    public Integer getSort() {
+    public Long getSort() {
         return sort;
     }
 
-    public void setSort(Integer sort) {
+    public void setSort(Long sort) {
         this.sort = sort;
     }
 
-    public Integer getClassify() {
+    public Long getClassify() {
         return classify;
     }
 
-    public void setClassify(Integer classify) {
+    public void setClassify(Long classify) {
         this.classify = classify;
     }
 

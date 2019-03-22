@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+    <link rel="stylesheet" th:href="@{/css/eleTree.css}">
+    <style>
+        h1 {
+            height: 60px; line-height: 60px;margin-left: 50px;
+        }
+        .layui-form {
+            max-width: 600px;
+        }
+        .eleTree{
+            width: 350px;
+            height: 400px;
+            border: 1px solid #ccc;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1 th:text="${title}"></h1>
+    </div>
+
+    <div>
+        <form class="layui-form" action="">
+            <input type="hidden" name="isDel" value="0">
+            <input name="id" type="hidden" th:value="${role} != null?${role.id}:''">
+            <div class="layui-form-item">
+                <label class="layui-form-label">角色名称</label>
+                <div class="layui-input-block">
+                    <input th:value="${role} != null?${role.roleName}:''" type="text" name="roleName" required  lay-verify="required" placeholder="请输入角色名称" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">描述</label>
+                <div class="layui-input-block">
+                    <input th:value="${role} != null?${role.introduction}:''" type="text" name="introduction" required  lay-verify="required" placeholder="请输入具体描述" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="role">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+</body>
+
+<script th:src="@{/layui/layui.js}"></script>
+<script>
+    var permissionIds = new Set();
+    layui.config({
+        base: "/layui/lay/mymodules/"
+    }).use(['form', 'layer', 'jquery', 'eleTree'], function () {
+        var form = layui.form
+            ,eleTree = layui.eleTree
+            ,layer = layui.layer
+            ,$ = layui.$;
+        form.on('submit(role)', function (data) {
+            var url = "/system/role/save_role";
+            var postData = data.field;
+            postData['permissionIds'] = permissionIds;
+            console.log(postData);
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: url,
+                data: postData,
+                beforeSend: function(){
+                    layer.load(
+                        1,
+                        {time: 5000}
+                    );
+                },
+                success: function (result) {
+                    console.log(result);
+                    if(result.code == 0){
+                        alert('保存角色数据成功--------------');
+                        layer.closeAll();
+                        console.log(result);
+                        location.replace("/system/role/system_role")
+                    } else {
+                        layer.alert(result.msg);
+                    }
+                },
+                error: function (result) {
+                    layer.closeAll();
+                    alert('保存角色失败，请重试--------------')
+                    console.log(result)
+                }
+            });
+            return false;
+        });
+
+        //https://fly.layui.com/extend/eleTree/#doc
+        eleTree.render({
+            elem: '.ele1',
+            method: "post",
+            url: "/system/role/get_permission_list_by_tree",
+            showCheckbox: true,
+            done: function (data) {
+                console.log(data);
+            }
+        });
+
+        // input被选中事件
+        eleTree.on("nodeChecked(data1)",function(d) {
+            if(d.isChecked){
+                permissionIds.add(d.data.currentData.id);
+                if(d.data.currentData.children != null){
+                    $.each(d.data.currentData.children, function (index, item) {
+                        permissionIds.add(item.id);
+                    })
+                }
+            } else {
+                permissionIds.delete(d.data.currentData.id);
+                if(d.data.currentData.children != null){
+                    $.each(d.data.currentData.children, function (index, item) {
+                        permissionIds.delete(item.id);
+                    })
+                }
+            }
+            console.log(permissionIds);
+//            console.log(d.data);    // 点击节点对于的数据
+//            console.log(d.data.currentData.label);
+//            console.log(d.isChecked);   // input是否被选中
+//            console.log(d.node);    // 点击的dom节点
+//            console.log(this);      // input对于的dom
+        });
+
+        return false;
+
+    });
+</script>
+</html>

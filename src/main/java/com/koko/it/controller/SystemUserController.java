@@ -74,14 +74,12 @@ public class SystemUserController {
         return ResponseMessage.fail("获取数据出错");
     }
 
-    @Transactional
     @RequestMapping(value = "/save_user", method = RequestMethod.POST)
     @ResponseBody
     public ResponseMessage saveUser(User user, Long roleId){
         try {
             if (user.getId() == null) {
                 //新增用户
-                // TODO shiro配置createUserId和updateUserID
                 //这里暂时手动添加createUserId和updateUserID
                 String username =  SecurityUtils.getSubject().getPrincipal().toString();
                 User loginUser = userService.findByUserName(username);

@@ -26,7 +26,7 @@
             </div>
         </div>
     </div>
-    <!--<table id="tb_data" lay-filter="role"></table>-->
+    <table id="tb_data" lay-filter="role"></table>
 </body>
 
 <script th:src="@{/layui/layui.js}"></script>
@@ -36,7 +36,7 @@
             , $ = layui.$;
 
         $('#add').on('click', function () {
-//            location.href="add_user";
+            location.href="/system/role/add_role";
         });
 
         $("#search").on('click',function () {
@@ -52,16 +52,18 @@
         });
 
         //获取表格数据
-        var tb1 = table.render({
+        table.render({
             elem: '#tb_data'
             ,height: 'full-150'
-            ,url: 'getRoleList' //数据接口
+            ,url: 'get_role_list' //数据接口
             ,page: true //开启分页
             ,even: true // 设置间隔
             ,id: 'table_blog'
             ,cols: [
                 [ //表头
                     {field: 'id', title: 'ID', width:50, sort: true, fixed: 'left'}
+                    ,{field: 'roleName', title: '角色名称', width:200}
+                    ,{field: 'introduction', title: '说明'}
                     ,{fixed: 'right', title: '操作', width:150, align:'center', toolbar: '#barDemo', fixed: 'right'} //这里的toolbar值是模板元素的选择器
                 ]
             ]
@@ -82,7 +84,7 @@
                 });
             } else if(layEvent === 'edit'){ //编辑
                 //do something
-//                location.href="add_user?id="+data.id;
+                location.href="/system/role/add_role?id="+data.id;
             }
         });
 
