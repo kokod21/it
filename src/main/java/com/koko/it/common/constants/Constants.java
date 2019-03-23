@@ -26,7 +26,4 @@ public interface Constants {
 
     int PAGE_SIZE = 20; // 分页加载，每页的数量
 
-    String DEFAULT_NAME = "pppppp";
-    String DEFAULT_PASSWORD = "pppppp";
-
 }

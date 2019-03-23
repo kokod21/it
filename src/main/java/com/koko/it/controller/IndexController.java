@@ -35,16 +35,10 @@ public class IndexController {
             System.out.println("-------------------------------------------是否有权限="+flag);
 
             String username =  SecurityUtils.getSubject().getPrincipal().toString();
-            User loginUser = new User();
-            loginUser.setUserName("超级无敌管理员");
-            if(Constants.DEFAULT_NAME.equals(username)){
-                List<Permission> lists = permissionService.findByNameNot("");
-                httpServletRequest.setAttribute("lists", lists);
-            } else {
-                loginUser = userService.findByUserName(username);
+            User loginUser = userService.findByUserName(username);
                 List<Map<String, Object>> lists = permissionService.getPermissionByUserId(loginUser.getId());
                 httpServletRequest.setAttribute("lists", lists);
-            }
+
             httpServletRequest.setAttribute("user", loginUser);
         } catch (Exception e) {
             e.printStackTrace();

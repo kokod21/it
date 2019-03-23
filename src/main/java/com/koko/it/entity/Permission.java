@@ -10,14 +10,16 @@ public class Permission  extends BaseEntity{
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
-    private String name;
+    private String permissionName;
     private Long pid; //（0 一级分类  1 二级分类）
     private Long sort;
     private Long classify;
-    private String describe;
+    private String introduction;
     private String code;
     private String url;
     private String icon;
+    private Long createUserId;
+    private Long updateUserId;
 
     public Long getId() {
         return id;
@@ -27,12 +29,12 @@ public class Permission  extends BaseEntity{
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getPermissionName() {
+        return permissionName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setPermissionName(String permissionName) {
+        this.permissionName = permissionName;
     }
 
     public Long getPid() {
@@ -75,12 +77,12 @@ public class Permission  extends BaseEntity{
         this.classify = classify;
     }
 
-    public String getDescribe() {
-        return describe;
+    public String getIntroduction() {
+        return introduction;
     }
 
-    public void setDescribe(String describe) {
-        this.describe = describe;
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
     }
 
     public String getUrl() {
@@ -89,5 +91,21 @@ public class Permission  extends BaseEntity{
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public Long getCreateUserId() {
+        return createUserId;
+    }
+
+    public void setCreateUserId(Long createUserId) {
+        this.createUserId = createUserId;
+    }
+
+    public Long getUpdateUserId() {
+        return updateUserId;
+    }
+
+    public void setUpdateUserId(Long updateUserId) {
+        this.updateUserId = updateUserId;
     }
 }

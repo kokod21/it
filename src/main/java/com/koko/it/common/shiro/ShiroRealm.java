@@ -1,10 +1,8 @@
 package com.koko.it.common.shiro;
 
-import com.koko.it.common.constants.Constants;
 import com.koko.it.entity.User;
 import com.koko.it.service.PermissionService;
 import com.koko.it.service.UserService;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -31,20 +29,14 @@ public class ShiroRealm extends AuthorizingRealm{
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         String username = principalCollection.getPrimaryPrincipal().toString();
-        if(Constants.DEFAULT_NAME.equals(username)){
-            simpleAuthorizationInfo.addRole("*");
-            simpleAuthorizationInfo.addStringPermission("*");
-            return simpleAuthorizationInfo;
-        } else {
-            User user = userService.findByUserName(username);
-            if (user != null) {
-                List<Map<String, Object>> lists = permissionService.getPermissionByUserId(user.getId());
-                for (Map<String, Object> list : lists) {
-                    //配置权限信息
-                    simpleAuthorizationInfo.addStringPermission(list.get("code").toString());
-                }
-                return simpleAuthorizationInfo;
+        User user = userService.findByUserName(username);
+        if (user != null) {
+            List<Map<String, Object>> lists = permissionService.getPermissionByUserId(user.getId());
+            for (Map<String, Object> list : lists) {
+                //配置权限信息
+                simpleAuthorizationInfo.addStringPermission(list.get("code").toString());
             }
+            return simpleAuthorizationInfo;
         }
         return null;
     }
@@ -58,13 +50,8 @@ public class ShiroRealm extends AuthorizingRealm{
         UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) authenticationToken;
         String username = usernamePasswordToken.getUsername();
         String password = new String(usernamePasswordToken.getPassword());
-
-        if(username.equals(Constants.DEFAULT_NAME)){
-            return new SimpleAuthenticationInfo(Constants.DEFAULT_NAME, DigestUtils.md5Hex(Constants.DEFAULT_PASSWORD), getName());
-        } else {
-            User user = userService.findByUserNameAndPasswordAndIsDel(username, password, 0);
-            String salt = username+ String.valueOf(user.getPassword());
-            return new SimpleAuthenticationInfo(user.getUserName(), user.getPassword(), ByteSource.Util.bytes(salt), getName());
-        }
+        User user = userService.findByUserNameAndPasswordAndIsDel(username, password, 0);
+        String salt = username+ String.valueOf(user.getPassword());
+        return new SimpleAuthenticationInfo(user.getUserName(), user.getPassword(), ByteSource.Util.bytes(salt), getName());
     }
 }

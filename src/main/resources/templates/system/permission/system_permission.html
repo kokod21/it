@@ -16,27 +16,42 @@
 </head>
 <body>
     <div>
-        <h1>角色管理</h1>
+        <h1>权限管理</h1>
     </div>
     <hr >
     <div class="layui-row">
-        <div class="layui-col-md10">
+        <div class="layui-col-md2">
             <div class="layui-btn-group" >
                 <button id="add" class="layui-btn"><i class="layui-icon">&#xe654;</i>增加</button>
             </div>
         </div>
+        <div class="layui-col-md4">
+            <div class="layui-form ">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">筛选</label>
+                    <div class="layui-inline">
+                        <select id="sel_classify" class="layui-inline" lay-filter="test">
+                            <option value="">--全部--</option>
+                            <option value="0">一级分类</option>
+                            <option value="1">二级分类</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <table id="tb_data" lay-filter="role"></table>
+    <table id="tb_data" lay-filter="permission"></table>
 </body>
 
 <script th:src="@{/layui/layui.js}"></script>
 <script>
-    layui.use(['jquery','table'], function () {
+    layui.use(['jquery','table', 'form'], function () {
         var table = layui.table
-            , $ = layui.$;
+            , $ = layui.$
+            , form = layui.form;
 
         $('#add').on('click', function () {
-            location.href="/system/role/add_role";
+            location.href="/system/permission/add_permission";
         });
 
         $("#search").on('click',function () {
@@ -51,37 +66,60 @@
 //            })
         });
 
+
+        form.on('select(test)', function(data){
+            console.log(data.value);
+            layer.load(2);
+            table.reload('table_permission', {
+                where : {
+                    pid : data.value
+                }
+                , page : {
+                    curr : 1
+                }
+            })
+        });
+
         //获取表格数据
         table.render({
             elem: '#tb_data'
             ,height: 'full-150'
-            ,url: '/system/role/get_role_list' //数据接口
+            ,url: '/system/permission/get_permission_list' //数据接口
             ,page: true //开启分页
             ,even: true // 设置间隔
-            ,id: 'table_blog'
+            ,id: 'table_permission'
+            ,done : function () {
+                layer.closeAll();
+            }
             ,cols: [
                 [ //表头
                     {field: 'id', title: 'ID', width:50, sort: true, fixed: 'left'}
-                    ,{field: 'roleName', title: '角色名称', width:200}
+                    ,{field: 'permissionName', title: '权限名称', width:200}
+                    ,{field: 'url', title: '路径', width:300}
+                    ,{field: 'createTime', title: '创建时间', width:200}
+                    ,{field: 'updateTime', title: '最后修改时间', width:200}
                     ,{field: 'introduction', title: '说明'}
-                    ,{fixed: 'right', title: '操作', width:150, align:'center', toolbar: '#barDemo', fixed: 'right'} //这里的toolbar值是模板元素的选择器
+//                    ,{fixed: 'right', title: '操作', width:150, align:'center', toolbar: '#barDemo', fixed: 'right'} //这里的toolbar值是模板元素的选择器
                 ]
             ]
         });
 
         //监听表格右侧工具条按钮
-        table.on('tool(role)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+        table.on('tool(permission)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
             var data = obj.data; //获得当前行数据
             var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
             var tr = obj.tr; //获得当前行 tr 的DOM对象
-            if(layEvent === 'del'){ //删除
+            if(layEvent === 'detail'){ //查看
+                console.log(data);
+                //do somehing
+            } else if(layEvent === 'del'){ //删除
                 layer.confirm('真的删除行么', function(index){
                     layer.close(index);
 //                    //向服务端发送删除指令
                 });
             } else if(layEvent === 'edit'){ //编辑
                 //do something
-                location.href="/system/role/add_role?id="+data.id;
+                location.href="/system/permission/add_permission?id="+data.id;
             }
         });
 

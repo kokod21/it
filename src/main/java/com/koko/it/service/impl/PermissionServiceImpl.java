@@ -1,12 +1,10 @@
 package com.koko.it.service.impl;
 
 import com.koko.it.entity.Permission;
-import com.koko.it.entity.User;
 import com.koko.it.repository.PermissionRepository;
-import com.koko.it.repository.UserRepository;
 import com.koko.it.service.PermissionService;
-import com.koko.it.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,7 +28,12 @@ public class PermissionServiceImpl extends BaseServiceImpl<Permission, Long> imp
     }
 
     @Override
-    public List<Permission> findByNameNot(String name) {
-        return permissionRepository.findByNameNot(name);
+    public List<Permission> findByPermissionNameNot(String permissionName) {
+        return permissionRepository.findByPermissionNameNot(permissionName);
+    }
+
+    @Override
+    public List<Permission> findByPid(Long pid, Pageable pageable) {
+        return permissionRepository.findByPid(pid, pageable);
     }
 }

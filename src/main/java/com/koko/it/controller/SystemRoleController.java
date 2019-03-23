@@ -99,12 +99,12 @@ public class SystemRoleController {
                     //一级分类
                     PermissionTreeVo treeVo = new PermissionTreeVo();
                     treeVo.id = permission.getId();
-                    treeVo.label = permission.getName();
+                    treeVo.label = permission.getPermissionName();
                     for (Permission innerPermission : roleList) {
                         if (innerPermission.getPid().equals(permission.getId())) {
                             PermissionTreeVo.Children children = new PermissionTreeVo.Children();
                             children.id = innerPermission.getId();
-                            children.label = innerPermission.getName();
+                            children.label = innerPermission.getPermissionName();
                             treeVo.children.add(children);
                         }
                     }
