@@ -8,4 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 public interface RoleService extends BaseService<Role, Long> {
+
+    void saveRole(Role role, String[] permissionIds);
+    void deleteRole(Long id);
+
 }

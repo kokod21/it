@@ -3,7 +3,6 @@ package com.koko.it.service.impl;
 import com.koko.it.entity.User;
 import com.koko.it.entity.UserRole;
 import com.koko.it.repository.UserRepository;
-import com.koko.it.service.RoleService;
 import com.koko.it.service.UserRoleService;
 import com.koko.it.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
-
 
 @Service
 public class UserServiceImpl extends BaseServiceImpl<User, Long> implements UserService {
@@ -54,6 +52,10 @@ public class UserServiceImpl extends BaseServiceImpl<User, Long> implements User
         } else {
             userRepository.save(user);
             UserRole userRole = userRoleService.findByUserId(user.getId());
+            if (userRole == null) {
+                userRole = new UserRole();
+                userRole.setUserId(user.getId());
+            }
             userRole.setRoleId(roleId);
             userRoleService.save(userRole);
         }

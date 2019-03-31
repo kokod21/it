@@ -94,6 +94,7 @@ public class SystemUserController {
                 User loginUser = userService.findByUserName(username);
                 User oldUser = userService.findById(user.getId()).get();
                 oldUser.setUserName(user.getUserName());
+                oldUser.setRealName(user.getRealName());
                 oldUser.setEmail(user.getEmail());
                 oldUser.setMobile(user.getMobile());
                 oldUser.setRemark(user.getRemark());
@@ -130,8 +131,7 @@ public class SystemUserController {
     @ResponseBody
     public ResponseMessage deleteUser(Long id){
         try {
-            User user = userService.findById(id).get();
-            userService.delete(user);
+            userRoleService.deleteByUserId(id);
             return ResponseMessage.ok();
         } catch (Exception e) {
             e.printStackTrace();

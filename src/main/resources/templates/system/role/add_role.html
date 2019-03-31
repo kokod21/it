@@ -14,7 +14,7 @@
         }
         .eleTree{
             width: 350px;
-            height: 400px;
+            height: 300px;
             border: 1px solid #ccc;
             overflow: auto;
         }
@@ -28,6 +28,7 @@
     <div>
         <form class="layui-form" action="">
             <input type="hidden" name="isDel" value="0">
+            <input id="ids" type="hidden" th:value="${ids}">
             <input name="id" type="hidden" th:value="${role} != null?${role.id}:''">
             <div class="layui-form-item">
                 <label class="layui-form-label">角色名称</label>
@@ -40,6 +41,13 @@
                 <label class="layui-form-label">描述</label>
                 <div class="layui-input-block">
                     <input th:value="${role} != null?${role.introduction}:''" type="text" name="introduction" required  lay-verify="required" placeholder="请输入具体描述" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">拥有权限</label>
+                <div class="layui-input-block">
+                    <div class="eleTree ele1"></div>
                 </div>
             </div>
 
@@ -57,7 +65,7 @@
 
 <script th:src="@{/layui/layui.js}"></script>
 <script>
-    var permissionIds = new Set();
+    var permissionIds = new Array();
     layui.config({
         base: "/layui/lay/mymodules/"
     }).use(['form', 'layer', 'jquery', 'eleTree'], function () {
@@ -66,6 +74,11 @@
             ,layer = layui.layer
             ,$ = layui.$;
         form.on('submit(role)', function (data) {
+            // 获取选中的节点，接收两个 boolean 类型的参数，1. 是否只是叶子节点，默认值为 false 2. 是否包含半选节点，默认值为 false
+            var selData = el.getChecked(false, true);
+            $.each(selData, function (index, item) {
+                permissionIds[index] = item.id;
+            });
             var url = "/system/role/save_role";
             var postData = data.field;
             postData['permissionIds'] = permissionIds;
@@ -94,7 +107,7 @@
                 },
                 error: function (result) {
                     layer.closeAll();
-                    alert('保存角色失败，请重试--------------')
+                    layer.alert('保存角色失败，请重试--------------')
                     console.log(result)
                 }
             });
@@ -102,41 +115,20 @@
         });
 
         //https://fly.layui.com/extend/eleTree/#doc
-        eleTree.render({
+        var el = eleTree.render({
             elem: '.ele1',
             method: "post",
             url: "/system/role/get_permission_list_by_tree",
             showCheckbox: true,
+            defaultExpandAll: true,
             done: function (data) {
-                console.log(data);
+                var ids = $('#ids').val();
+                var dd = ids.split("-");
+                console.log(dd);
+//                var dd = [2,3];
+                el.setChecked(dd);
             }
         });
-
-        // input被选中事件
-        eleTree.on("nodeChecked(data1)",function(d) {
-            if(d.isChecked){
-                permissionIds.add(d.data.currentData.id);
-                if(d.data.currentData.children != null){
-                    $.each(d.data.currentData.children, function (index, item) {
-                        permissionIds.add(item.id);
-                    })
-                }
-            } else {
-                permissionIds.delete(d.data.currentData.id);
-                if(d.data.currentData.children != null){
-                    $.each(d.data.currentData.children, function (index, item) {
-                        permissionIds.delete(item.id);
-                    })
-                }
-            }
-            console.log(permissionIds);
-//            console.log(d.data);    // 点击节点对于的数据
-//            console.log(d.data.currentData.label);
-//            console.log(d.isChecked);   // input是否被选中
-//            console.log(d.node);    // 点击的dom节点
-//            console.log(this);      // input对于的dom
-        });
-
         return false;
 
     });

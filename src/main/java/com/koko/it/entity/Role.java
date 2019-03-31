@@ -10,11 +10,11 @@ public class Role extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    public Long id;
-    public String roleName;
-    public String introduction;
-//    public String code;
-    public Long createUserId;
+    private Long id;
+    private String roleName;
+    private String introduction;
+    private String code;
+    private Long createUserId;
 
     public Long getId() {
         return id;
@@ -40,13 +40,13 @@ public class Role extends BaseEntity {
         this.introduction = introduction;
     }
 
-//    public String getCode() {
-//        return code;
-//    }
-//
-//    public void setCode(String code) {
-//        this.code = code;
-//    }
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public Long getCreateUserId() {
         return createUserId;
@@ -54,5 +54,10 @@ public class Role extends BaseEntity {
 
     public void setCreateUserId(Long createUserId) {
         this.createUserId = createUserId;
+    }
+
+    @Override
+    public String toString() {
+        return id+"=="+roleName+"=="+introduction;
     }
 }

@@ -75,9 +75,39 @@
             var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
             var tr = obj.tr; //获得当前行 tr 的DOM对象
             if(layEvent === 'del'){ //删除
-                layer.confirm('真的删除行么', function(index){
-                    layer.close(index);
-//                    //向服务端发送删除指令
+                layer.confirm('该操作将会删除当前角色及其所拥有权限，确定要删除吗？', function(index){
+                    var url = "/system/role/delete_role";
+                    var postData = {
+                        id: data.id
+                    };
+                    console.log(postData);
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: url,
+                        data: postData,
+                        beforeSend: function () {
+                            console.log('提交之前');
+                            layer.load(
+                                2,
+                                {time: 5000}
+                            );
+                        },
+                        success: function (result) {
+                            layer.closeAll();
+                            if(result.code == 0){
+                                alert('删除角色数据成功');
+                                location.reload();
+                            } else {
+                                layer.alert(result.msg);
+                            }
+                        },
+                        error: function (result) {
+                            layer.closeAll();
+                            alert('删除角色失败，请重试--------------')
+                            console.log(result)
+                        }
+                    });
                 });
             } else if(layEvent === 'edit'){ //编辑
                 //do something

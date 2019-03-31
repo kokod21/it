@@ -9,7 +9,8 @@ public class User extends BaseEntity{
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true)
-    private String userName;
+    private String userName;//登录账户
+    private String realName;//真实姓名
     private String mobile;
     private String email;
     private String password;
@@ -24,6 +25,22 @@ public class User extends BaseEntity{
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getRealName() {
+        return realName;
+    }
+
+    public void setRealName(String realName) {
+        this.realName = realName;
     }
 
     public String getMobile() {
@@ -50,36 +67,12 @@ public class User extends BaseEntity{
         this.password = password;
     }
 
-    public Integer getIsDel() {
-        return isDel;
-    }
-
-    public void setIsDel(Integer isDel) {
-        this.isDel = isDel;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
     public Long getCreateUserId() {
         return createUserId;
     }
 
     public void setCreateUserId(Long createUserId) {
         this.createUserId = createUserId;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
     }
 
     public Long getUpdateUserId() {
@@ -90,9 +83,25 @@ public class User extends BaseEntity{
         this.updateUserId = updateUserId;
     }
 
+    public Integer getIsDel() {
+        return isDel;
+    }
+
+    public void setIsDel(Integer isDel) {
+        this.isDel = isDel;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
     @Override public String toString() {
         return "UserDTO{" + "id=" + id + ", userName='" + userName + '\''
-                + ", mobile='" + mobile + '\'' + ", email='" + email + '\''
-                + ", password='" + password + '\'' + ", code='" ;
+                + ", realName='" + realName + '\''
+                + ", mobile='" + mobile + '\'' + ", email='" + email + '\'';
     }
 }

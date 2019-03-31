@@ -23,9 +23,15 @@
             <input type="hidden" name="isDel" value="0">
             <input name="id" type="hidden" th:value="${user} != null?${user.id}:''">
             <div class="layui-form-item">
+                <label class="layui-form-label">登录账户</label>
+                <div class="layui-input-block">
+                    <input th:value="${user} != null?${user.user_name}:''" type="text" name="userName" required  lay-verify="required" placeholder="请输入登录账户" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
                 <label class="layui-form-label">姓名</label>
                 <div class="layui-input-block">
-                    <input th:value="${user} != null?${user.user_name}:''" type="text" name="userName" required  lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+                    <input th:value="${user} != null?${user.real_name}:''" type="text" name="realName" required  lay-verify="required" placeholder="请输入用户姓名" autocomplete="off" class="layui-input">
                 </div>
             </div>
 

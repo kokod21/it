@@ -2,11 +2,9 @@ package com.koko.it.controller;
 
 import com.alibaba.druid.util.StringUtils;
 import com.koko.it.common.response.ResponseMessage;
-import com.koko.it.entity.Permission;
-import com.koko.it.entity.PermissionTreeVo;
-import com.koko.it.entity.Role;
-import com.koko.it.entity.User;
+import com.koko.it.entity.*;
 import com.koko.it.service.PermissionService;
+import com.koko.it.service.RolePermissionService;
 import com.koko.it.service.RoleService;
 import com.koko.it.service.UserService;
 import com.koko.it.utils.LogUtil;
@@ -15,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +32,8 @@ public class SystemRoleController {
     UserService userService;
     @Autowired
     PermissionService permissionService;
+    @Autowired
+    RolePermissionService rolePermissionService;
 
     @RequestMapping("/system_role")
     public String mainRole(){
@@ -48,6 +49,20 @@ public class SystemRoleController {
             try {
                 Role role = roleService.findById(Long.parseLong(id)).get();
                 request.setAttribute("role", role);
+                if (role != null) {
+                    List<RolePermission> rolePermissionList = rolePermissionService.findByRoleId(role.getId());
+                    if (rolePermissionList != null) {
+                        StringBuilder sb = new StringBuilder();
+                        for (int i = 0; i < rolePermissionList.size(); i++) {
+                            if (i == rolePermissionList.size()-1) {
+                                sb.append(rolePermissionList.get(i).getPermissionId());
+                            } else {
+                                sb.append(rolePermissionList.get(i).getPermissionId()).append("-");
+                            }
+                        }
+                        request.setAttribute("ids", sb.toString());
+                    }
+                }
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
@@ -71,18 +86,26 @@ public class SystemRoleController {
 
     @RequestMapping(value = "/save_role", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseMessage saveRole(Role role){
+    public ResponseMessage saveRole(Role role, @RequestParam(value = "permissionIds[]") String[] permissionIds){
         try {
-            String username =  SecurityUtils.getSubject().getPrincipal().toString();
-            User loginUser = userService.findByUserName(username);
-            if (loginUser != null) {
-                role.setCreateUserId(loginUser.getId());
-            }
-            roleService.save(role);
+            roleService.saveRole(role, permissionIds);
             return ResponseMessage.ok();
         } catch (Exception e) {
-            e.printStackTrace();
             logUtil.error("saveRole", e);
+            e.printStackTrace();
+        }
+        return ResponseMessage.fail("保存角色数据失败");
+    }
+
+    @RequestMapping(value = "/delete_role", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseMessage deleteRole(Long id){
+        try {
+            roleService.deleteRole(id);
+            return ResponseMessage.ok();
+        } catch (Exception e) {
+            logUtil.error("saveRole", e);
+            e.printStackTrace();
         }
         return ResponseMessage.fail("保存角色数据失败");
     }
